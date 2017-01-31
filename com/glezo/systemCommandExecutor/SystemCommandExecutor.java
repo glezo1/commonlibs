@@ -1,4 +1,4 @@
-package systemCommandExecutor;
+package com.glezo.systemCommandExecutor;
 
 import java.io.*;
 import java.util.Iterator;
