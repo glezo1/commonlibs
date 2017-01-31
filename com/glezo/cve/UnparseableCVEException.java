@@ -1,4 +1,4 @@
-package cve;
+package com.glezo.cve;
 
 public class UnparseableCVEException extends Exception 
 {
