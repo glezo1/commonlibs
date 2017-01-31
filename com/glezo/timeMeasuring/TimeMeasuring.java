@@ -4,7 +4,7 @@ package com.glezo.timeMeasuring;
 import java.util.ArrayList;
 import java.util.Date;
 /*
-	This class is aimed to be used an informal, raggedy, Visitor-ish way to measure times. 
+	This class is aimed to be used as an informal, raggedy, Visitor-ish way to measure times. 
 	Just
 	TimeMeasuring time_measurer=new TimeMeasuring();
 	time_measurer.start_running("task1");
