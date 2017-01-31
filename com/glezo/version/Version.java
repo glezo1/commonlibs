@@ -1,4 +1,4 @@
-package version;
+package com.glezo.version;
 
 import java.util.ArrayList;
 
