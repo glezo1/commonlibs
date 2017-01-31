@@ -1,4 +1,4 @@
-package mac;
+package com.glezo.mac;
 
 
 public class Mac 
