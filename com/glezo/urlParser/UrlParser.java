@@ -1,4 +1,4 @@
-package urlParser;
+package com.glezo.urlParser;
 
 
 import java.util.ArrayList;
