@@ -29,7 +29,7 @@ public class ConfigurationFileReader
 		{
 			current_line_number++;
 			String current_line_trimmed=current_line.trim();
-			if(!current_line_trimmed.startsWith("#"))
+			if(!current_line_trimmed.startsWith("#") && !current_line_trimmed.equals(""))
 			{
 				int separator_position=current_line_trimmed.indexOf('=');
 				if(separator_position==-1)
