@@ -1,0 +1,76 @@
+package com.glezo.google_wrapper;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.util.ArrayList;
+
+import com.glezo.htmlWrapper.HtmlWrapper;
+import com.glezo.htmlWrapper.HtmlWrapperReturn;
+
+/*
+	Just a google customsearch api wrapper at higher level.
+	customsearch implements so many, many options. This wrapper just exposes the ones I need right now:
+		&q		query
+		&start	entry number to start from 
+		&lr		content language.	
+*/
+
+public class Google_Wrapper 
+{
+	//http://webapps.stackexchange.com/questions/16047/how-to-restrict-a-google-search-to-results-of-a-specific-language
+	private String	api_key;
+	
+	//-------------------------------------------------------
+	public Google_Wrapper(String api_key)
+	{
+		this.api_key=api_key;
+	}
+	//-------------------------------------------------------
+	public ArrayList<String> query(String query,String content_language,int start_parameter)
+	{
+		ArrayList<String> result=new ArrayList<String>();
+		String url_string="";
+			url_string			+="https://www.googleapis.com/customsearch/v1?";
+			url_string			+="key="+this.api_key;
+			url_string			+="&start="+start_parameter;
+			url_string			+="&cx=013036536707430787589:_pqjad5hr1a";
+			url_string			+="&q="+query;
+		if(content_language!=null)	
+		{	
+			url_string			+="&lr="+content_language;	
+		}									
+			url_string			+="&alt=json";
+
+		HtmlWrapper htmlWrapper=null;
+		try 
+		{
+			htmlWrapper=new HtmlWrapper(url_string,null,"GET",5,5,true);
+		} 
+		catch (MalformedURLException e) 
+		{
+		} 
+		catch (ProtocolException e) 
+		{
+		} 
+		catch (IOException e) 
+		{
+		}
+		htmlWrapper.setRequestProperty("Accept","application/json");
+		HtmlWrapperReturn google_result=htmlWrapper.get_html(0);
+		//yes, I should've used a json parser... but bro, it's 22:03 and I just got home from work  
+		ArrayList<String> google_result_lines=google_result.get_lines_return();
+		for(int i=0;i<google_result_lines.size();i++)
+		{
+			String current_line=google_result_lines.get(i);
+			if(current_line.contains("\"link\": \""))
+			{                
+				String link=current_line.substring(current_line.indexOf("\"link\": \"")+("\"link\": \"").length(), current_line.indexOf("\","));
+				result.add(link);
+			}     
+		}
+		return result;
+	}
+	//-------------------------------------------------------
+}
+
