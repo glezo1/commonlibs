@@ -2,7 +2,7 @@ package com.glezo.version;
 
 import java.util.ArrayList;
 
-import string_utils.String_Utils;
+import com.glezo.stringUtils.StringUtils;
 
 public class Version implements Comparable<Version>
 {
@@ -89,8 +89,8 @@ public class Version implements Comparable<Version>
 			String current_this_raw_part=this.list_of_version_parts.get(i);
 			String current_another_raw_part=another.list_of_version_parts.get(i);
 			
-			String current_this_integer_string		=String_Utils.max_prefix_conforming_an_integer_for(current_this_raw_part); 
-			String current_another_integer_string	=String_Utils.max_prefix_conforming_an_integer_for(current_another_raw_part);
+			String current_this_integer_string		=StringUtils.max_prefix_conforming_an_integer_for(current_this_raw_part); 
+			String current_another_integer_string	=StringUtils.max_prefix_conforming_an_integer_for(current_another_raw_part);
 			
 			Integer current_this	=Integer.parseInt(current_this_integer_string);
 			Integer current_another	=Integer.parseInt(current_another_integer_string);
