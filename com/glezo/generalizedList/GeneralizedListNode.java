@@ -1,7 +1,7 @@
 package com.glezo.generalizedList;
 
 //T must equals(), no actually need for compareTo()
-public class GeneralizedListNode<T extends Comparable<T>> 
+public class GeneralizedListNode<T> 
 {
 	private boolean					is_list;
 	private T						data;
