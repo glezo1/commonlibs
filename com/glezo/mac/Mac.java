@@ -90,4 +90,18 @@ public class Mac
 		return this.iso_mac;
 	}
 	//-----------------------------------------------------------------------------------------
+	public static boolean	is_valid_mac(String m)
+	{
+		try
+		{
+			new Mac(m);
+			return true;
+		}
+		catch(UnparseableMacException e)
+		{ 
+			return false;
+		}
+	}
+	//-----------------------------------------------------------------------------------------
+	
 }
