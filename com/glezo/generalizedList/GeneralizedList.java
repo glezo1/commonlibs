@@ -10,7 +10,7 @@ import java.util.ArrayList;
 */
 
 //T must equals(), no actually need for compareTo()
-public class GeneralizedList<T extends Comparable<T>>
+public class GeneralizedList<T>
 {
 	private GeneralizedListNode<T> root;
 	
