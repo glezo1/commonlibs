@@ -4,7 +4,7 @@ public class UnparseableIpv4Exception extends Exception
 {
 	private static final long serialVersionUID = 1L;
 
-	public UnparseableIpException(String msg)
+	public UnparseableIpv4Exception(String msg)
 	{
 		super(msg);
 	}
