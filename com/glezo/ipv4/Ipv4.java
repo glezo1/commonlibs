@@ -13,7 +13,7 @@ public class Ipv4 implements Comparable<Ipv4>
 	
 
 	//----------------------------------------------------------------
-	public Ipv4(String ip_string) throws UnparseableIpException
+	public Ipv4(String ip_string) throws UnparseableIpv4Exception
 	{
 		this.ip_string=ip_string.trim();
 		this.ip_long=0;
@@ -23,7 +23,7 @@ public class Ipv4 implements Comparable<Ipv4>
 		{
 			if(!stringTokenizer.hasMoreTokens())
 			{
-				throw new UnparseableIpException("Less than 4 bytes!!");
+				throw new UnparseableIpv4Exception("Less than 4 bytes!!");
 			}
 			tokens[i]=stringTokenizer.nextToken();
 			Integer tmp=0;
@@ -32,7 +32,7 @@ public class Ipv4 implements Comparable<Ipv4>
 				tmp=Integer.parseInt(tokens[i]);
 				if(  !(0<=tmp && tmp<=255)  )
 				{
-					throw new UnparseableIpException("Invalid value at byte "+i+":"+tokens[i]);				
+					throw new UnparseableIpv4Exception("Invalid value at byte "+i+":"+tokens[i]);				
 				}
 				double tmp2= Math.pow(256,(4-i-1));
 				this.ip_long+=tmp*tmp2;
@@ -43,12 +43,12 @@ public class Ipv4 implements Comparable<Ipv4>
 			}
 			catch(NumberFormatException e)
 			{
-				throw new UnparseableIpException("Octet "+i+"th is not a number: "+tokens[i]);
+				throw new UnparseableIpv4Exception("Octet "+i+"th is not a number: "+tokens[i]);
 			}
 		}
 		if(stringTokenizer.hasMoreTokens())
 		{
-			throw new UnparseableIpException("More than 4 bytes!!");
+			throw new UnparseableIpv4Exception("More than 4 bytes!!");
 		}
 	}
 	//----------------------------------------------------------------
@@ -62,11 +62,11 @@ public class Ipv4 implements Comparable<Ipv4>
 		this.ip_octet4=another.ip_octet4;
 	}
 	//----------------------------------------------------------------
-	public Ipv4(long ipAsDouble) throws UnparseableIpException
+	public Ipv4(long ipAsDouble) throws UnparseableIpv4Exception
 	{
 		if(ipAsDouble<0 || 4294967295L<ipAsDouble)
 		{
-			throw new UnparseableIpException("Overflow! Invalid long value "+ipAsDouble+": must be in [0,4294967295]!");
+			throw new UnparseableIpv4Exception("Overflow! Invalid long value "+ipAsDouble+": must be in [0,4294967295]!");
 		}
 		int[] bytes=new int[4];
 		int foo=(int)ipAsDouble;
