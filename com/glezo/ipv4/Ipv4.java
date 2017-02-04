@@ -103,7 +103,7 @@ public class Ipv4 implements Comparable<Ipv4>
 		{
 			return new Ipv4((long)this.getIp_as_long()+1);
 		} 
-		catch (UnparseableIpException e) 
+		catch (UnparseableIpv4Exception e) 
 		{
 			return null;
 		}
@@ -136,7 +136,7 @@ public class Ipv4 implements Comparable<Ipv4>
 		{
 			new Ipv4(ip);
 		} 
-		catch (UnparseableIpException e) 
+		catch (UnparseableIpv4Exception e) 
 		{
 			return false;
 		}
