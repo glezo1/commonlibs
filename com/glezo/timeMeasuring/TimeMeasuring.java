@@ -1,4 +1,4 @@
-package timeMeasuring;
+package com.glezo.timeMeasuring;
 
 import java.util.ArrayList;
 import java.util.Date;
