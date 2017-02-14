@@ -29,11 +29,12 @@ public class HtmlWrapper
 	private Integer					read_timeout;
 	private Boolean					follow_redirect;
 	private HashMap<String,String>	properties;
+	private HtmlProxy				proxy;
 	
 	private URL						url;
 	private HttpURLConnection		connection;
 	//-------------------------------------------------------------------------------------------------------------------------
-	public HtmlWrapper(String url_string,String user_agent,String method,int connect_timeout,int read_timeout,boolean follow_redirect) 
+	public HtmlWrapper(String url_string,String user_agent,String method,int connect_timeout,int read_timeout,boolean follow_redirect,HtmlProxy proxy) 
 			throws MalformedURLException,ProtocolException,IOException
 	{
 		this.url_string		=url_string;
@@ -42,6 +43,7 @@ public class HtmlWrapper
 		this.connect_timeout=connect_timeout;
 		this.read_timeout	=read_timeout;
 		this.follow_redirect=follow_redirect;
+		this.proxy			=proxy;
 		
 		//Settings to accept ALL certificates
 		TrustManager[] trustAllCerts = new TrustManager[]
@@ -87,6 +89,8 @@ public class HtmlWrapper
 		this.connection.setInstanceFollowRedirects(this.follow_redirect);
 		this.properties=new HashMap<String,String>();
 	}
+	//-------------------------------------------------------------------------------------------------------------------------
+	public HtmlProxy				getProxy()	{	return this.proxy;	}
 	//-------------------------------------------------------------------------------------------------------------------------
 	public void						setRequestProperty(String k,String v)					
 	{	
@@ -143,8 +147,8 @@ public class HtmlWrapper
 				String inputLine = null;
 				while ((inputLine = dis.readLine()) != null) 
 				{
-					if(normal_output==null)	{	normal_output=inputLine;	}
-					else					{	normal_output+=inputLine;	}
+					if(normal_output==null)	{	normal_output=inputLine+"\n";	}
+					else					{	normal_output+=inputLine+"\n";	}
 				}
 				dis.close();
 				this.connection.disconnect();
@@ -159,8 +163,8 @@ public class HtmlWrapper
 				String inputLine = null;
 				while ((inputLine = dis.readLine()) != null) 
 				{
-					if(error_output==null)	{	error_output=inputLine;		}
-					else					{	error_output+=inputLine;	}
+					if(error_output==null)	{	error_output=inputLine+"\n";	}
+					else					{	error_output+=inputLine+"\n";	}
 				}
 				dis.close();
 				this.connection.disconnect();
