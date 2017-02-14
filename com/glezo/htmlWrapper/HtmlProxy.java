@@ -28,4 +28,8 @@ public class HtmlProxy
 			System.getProperties().put("https.proxyPassword",this.password);
 		}
 	}
+	public String	getAddress()	{	return this.address;	}
+	public int		getPort()		{	return this.port;		}
+	public String	getUser()		{	return this.user;		}
+	public String	getPassword()	{	return this.password;	}
 }
