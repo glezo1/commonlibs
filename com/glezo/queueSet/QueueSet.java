@@ -6,14 +6,15 @@ public class QueueSet<T>
 {
 	private ArrayList<T>	queue;
 	
-	//-------------------------------------------------------------------------------------------------------
-	public QueueSet()						{	this.queue=new ArrayList<T>();								}
-	//GETTERS------------------------------------------------------------------------------------------------
-	public boolean contains(Object o)		{	return this.queue.contains(o);								}
-	public boolean isEmpty()				{	return this.queue.isEmpty();								}
-	public void add(T t)					{	if(!this.queue.contains(t)){this.queue.add(t);}				}
-	public String toString()				{	return this.queue.toString();								}
-	public ArrayList<T>	get_whole_queue()	{	return this.queue;											}	
+	//-----------------------------------------------------------------------------------------------------------
+	public QueueSet()							{	this.queue=new ArrayList<T>();								}
+	//GETTERS----------------------------------------------------------------------------------------------------
+	public boolean		contains(Object o)		{	return this.queue.contains(o);								}
+	public boolean		isEmpty()				{	return this.queue.isEmpty();								}
+	public void			add(T t)				{	if(!this.queue.contains(t)){this.queue.add(t);}				}
+	public int			size()					{	return this.queue.size();									}
+	public String		toString()				{	return this.queue.toString();								}
+	public ArrayList<T>	get_whole_queue()		{	return this.queue;											}	
 	public T peek()							
 	{	
 		if(this.isEmpty())
