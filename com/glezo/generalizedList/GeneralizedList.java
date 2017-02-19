@@ -128,4 +128,29 @@ public class GeneralizedList<T>
 		return result;
 	}
 	//----------------------------------------------------------------------------------------------
+	public ArrayList<T>								get_brothers(T e)
+	{
+		ArrayList<T> result=new ArrayList<T>();
+		ArrayList<GeneralizedListNode<T>> references_to_e=this.get_node_references_to_element(e);
+		for(int i=0;i<references_to_e.size();i++)
+		{
+			GeneralizedListNode<T> current_reference=references_to_e.get(i);
+			boolean finished=false;
+			while(!finished)
+			{
+				GeneralizedListNode<T> current_brother=current_reference.get_next_brother();
+				if(current_brother==null)
+				{
+					finished=true;
+				}
+				else
+				{
+					result.add(current_brother.get_data());
+					current_reference=current_brother;
+				}
+			}
+		}
+		return result;
+	}
+	//----------------------------------------------------------------------------------------------
 }
