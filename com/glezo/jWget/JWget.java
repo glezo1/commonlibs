@@ -1,4 +1,5 @@
-package ExecutableInterfaces;
+package com.glezo.jWget;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
