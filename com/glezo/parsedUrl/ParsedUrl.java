@@ -1,13 +1,16 @@
 package com.glezo.parsedUrl;
 
+package ppp;
+
 
 import java.util.ArrayList;
 
 public class ParsedUrl 
 {
 	private String				raw_content;
+	private String				whole_path;
 	private boolean				is_relative;
-	private UrlParser			relative_refers_to_parent;
+	private ParsedUrl			relative_refers_to_parent;
 	
 	private String				protocol;
 	private String				subdomain;
@@ -23,7 +26,7 @@ public class ParsedUrl
 	private ArrayList<String>	server_side_param_values;	//01,02
 	
 	//-------------------------------------------------------------------------------------------------------------
-	public ParsedUrl(String url,UrlParser parent_url)
+	public ParsedUrl(String url,ParsedUrl parent_url)
 	{
 		this.raw_content				=url;
 		this.is_relative				=false;
@@ -212,9 +215,11 @@ public class ParsedUrl
 				this.server_side_param_values.add(current_value);
 			}
 		}
+		this.whole_path=this.calculate_whole_path();
 	}
 	//-------------------------------------------------------------------------------------------------------------
 	public String				get_raw_content()				{	return this.raw_content;				}
+	public String				get_whole_path()				{	return this.whole_path;					}
 	public String				get_protocol()					{	return this.protocol;					}
 	public String				get_subdomain()					{	return this.subdomain;					}
 	public String				get_domain()					{	return this.domain;						}
@@ -223,13 +228,13 @@ public class ParsedUrl
 	public String				get_server_side_path()			{	return this.server_side_path;			}
 	public ArrayList<String>	get_list_of_subdomains()		{	return this.list_of_subdomains;			}
 	public boolean				is_relative()					{	return this.is_relative;				}
-	public UrlParser			get_refer_parent()				{	return this.relative_refers_to_parent;	}
+	public ParsedUrl			get_refer_parent()				{	return this.relative_refers_to_parent;	}
 	public String				get_server_side_target()		{	return this.server_side_target;			}
 	public ArrayList<String>	get_server_side_param_names()	{	return this.server_side_param_names;	}
 	public ArrayList<String>	get_server_side_param_values()	{	return this.server_side_param_values;	}
 	public String				toString()						{	return this.get_whole_path();			}
 	//-------------------------------------------------------------------------------------------------------------
-	public String				get_whole_path()
+	private String				calculate_whole_path()
 	{
 		if(!this.is_relative)
 		{
@@ -296,7 +301,7 @@ public class ParsedUrl
 			{
 				return false;
 			}
-			UrlParser oo=(UrlParser)o;
+			ParsedUrl oo=(ParsedUrl)o;
 			String a=this.get_whole_path();
 			String b=oo.get_whole_path();
 			if(a.endsWith("/")){a=a.substring(0,a.length()-1);	}
@@ -305,7 +310,7 @@ public class ParsedUrl
 		}
 	}
 	//-------------------------------------------------------------------------------------------------------------
-	public boolean				equals_but_param_values(UrlParser another)
+	public boolean				equals_but_param_values(ParsedUrl another)
 	{
 		if(!this.protocol.equals(another.protocol))										{	return false;	}
 		if(!this.subdomain.equals(another.subdomain))									{	return false;	}
