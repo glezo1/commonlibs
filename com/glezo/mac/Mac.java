@@ -103,5 +103,22 @@ public class Mac
 		}
 	}
 	//-----------------------------------------------------------------------------------------
-	
+	public boolean				equals(Object o)
+	{
+		if(o==null)
+		{
+			return false;
+		}
+		else
+		{
+			if(this.getClass()!=o.getClass())
+			{
+				return false;
+			}
+			Mac oo=(Mac)o;
+			return oo.iso_mac.equals(o.iso_mac);
+		}
+	}
+	//-----------------------------------------------------------------------------------------
+
 }
