@@ -1,8 +1,5 @@
 package com.glezo.parsedUrl;
 
-package ppp;
-
-
 import java.util.ArrayList;
 
 public class ParsedUrl 
