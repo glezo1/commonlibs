@@ -116,7 +116,7 @@ public class Mac
 				return false;
 			}
 			Mac oo=(Mac)o;
-			return oo.iso_mac.equals(o.iso_mac);
+			return oo.iso_mac.equals(oo.iso_mac);
 		}
 	}
 	//-----------------------------------------------------------------------------------------
