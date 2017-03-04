@@ -159,45 +159,52 @@ public class HtmlWrapper
 						content_type=urlConnectionB.getContentType();
 					}
 				}
-				String normal_output=null;
-				String error_output=null;
-				try
+				else if(content_type.equals("audio/mpeg"))
 				{
-					DataInputStream dis=null;
-					dis = new DataInputStream(this.connection.getInputStream());
-					String inputLine = null;
-					while ((inputLine = dis.readLine()) != null) 
+					
+				}
+				else
+				{
+					String normal_output=null;
+					String error_output=null;
+					try
 					{
-						if(normal_output==null)	{	normal_output=inputLine+"\n";	}
-						else					{	normal_output+=inputLine+"\n";	}
+						DataInputStream dis=null;
+						dis = new DataInputStream(this.connection.getInputStream());
+						String inputLine = null;
+						while ((inputLine = dis.readLine()) != null) 
+						{
+							if(normal_output==null)	{	normal_output=inputLine+"\n";	}
+							else					{	normal_output+=inputLine+"\n";	}
+						}
+						dis.close();
+						this.connection.disconnect();
 					}
-					dis.close();
-					this.connection.disconnect();
-				}
-				catch(IOException e)
-				{
-				}
-				try
-				{
-					DataInputStream dis=null;
-					dis = new DataInputStream(this.connection.getErrorStream());
-					String inputLine = null;
-					while ((inputLine = dis.readLine()) != null) 
+					catch(IOException e)
 					{
-						if(error_output==null)	{	error_output=inputLine+"\n";	}
-						else					{	error_output+=inputLine+"\n";	}
 					}
-					dis.close();
-					this.connection.disconnect();
+					try
+					{
+						DataInputStream dis=null;
+						dis = new DataInputStream(this.connection.getErrorStream());
+						String inputLine = null;
+						while ((inputLine = dis.readLine()) != null) 
+						{
+							if(error_output==null)	{	error_output=inputLine+"\n";	}
+							else					{	error_output+=inputLine+"\n";	}
+						}
+						dis.close();
+						this.connection.disconnect();
+					}
+					catch(IOException e)
+					{
+					}
+					catch(NullPointerException e)
+					{
+					}
+					if(normal_output!=null)		{	result=normal_output;	}
+					else						{	result=error_output;	}
 				}
-				catch(IOException e)
-				{
-				}
-				catch(NullPointerException e)
-				{
-				}
-				if(normal_output!=null)		{	result=normal_output;	}
-				else						{	result=error_output;	}
 			}
 			else
 			{
