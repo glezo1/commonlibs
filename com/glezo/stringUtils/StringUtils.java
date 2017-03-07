@@ -40,4 +40,36 @@ public class StringUtils
 		return null;
 	}
 	//-----------------------------------------------------------------------------------------------
+	//removes blanks, non-breaking space, \t, \r and \n
+	public static String		true_trim(String input)
+	{
+		if(input==null)				{	return null;	}
+		else if(input.equals(""))	{	return input;	}
+		
+		int first_significative_char_index=input.length()-1;
+		int last_significative_char_index=input.length()-1;
+		
+		for(int i=0;i<input.length();i++)
+		{
+			char c=input.charAt(i);
+			int k=c;
+			if(!(k==32 || k==160 || k==9 || k==13 || k==10))
+			{
+				first_significative_char_index=i;
+				break;
+			}
+		}
+		for(int i=input.length()-1;i>=0;i--)
+		{
+			char c=input.charAt(i);
+			int k=c;
+			if(!(k==32 || k==160 || k==9 || k==13 || k==10))
+			{
+				last_significative_char_index=i+1;
+				break;
+			}
+		}
+		return input.substring(first_significative_char_index,last_significative_char_index);
+	}
+	//-----------------------------------------------------------------------------------------------	
 }
