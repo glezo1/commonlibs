@@ -149,9 +149,12 @@ public class SystemCommandExecutor
 		String h=""+(char)27 + (char)91 +(char)57 +(char)52  +(char)109																			;
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
+		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
+		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
+		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"");
+			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"").replace(n,"");
 		}
 		return result;
 	}
@@ -184,9 +187,12 @@ public class SystemCommandExecutor
 		String h=""+(char)27 + (char)91 +(char)57 +(char)52  +(char)109																			;
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
+		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
+		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
+		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"");
+			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"").replace(n,"");
 		}
 		return result;
 	}
@@ -203,9 +209,4 @@ public class SystemCommandExecutor
 		return result;
 	}
 }
-
-
-
-
-
 
