@@ -139,22 +139,23 @@ public class SystemCommandExecutor
 	public String[]			getStandardOutputFromCommand_string_clean_lines()	//remove non-printable colour stuff
 	{
 		String result[]=this.inputStreamHandler.getOutputBuffer().toString().split("\n");
+		String g=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27 +(char)62 +(char)27 +(char)91 +(char)57 +(char)52 +(char)109	;
+		String o=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52 +(char)109			;
+		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
+		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		String a=""+(char)27 + (char)91 +(char)51 +(char)50  +(char)109																			; 
 		String f=""+(char)27 + (char)91 +(char)51 +(char)49  +(char)109																			; 
 		String b=""+(char)27 + (char)91 +(char)48 +(char)109																					;
 		String c=""+(char)27 + (char)91 +(char)51 +(char)52  +(char)109																			;
 		String d=""+(char)27 + (char)91 +(char)51 +(char)50  +(char)109																			;
 		String e=""+(char)27 + (char)91 +(char)51 +(char)51  +(char)109																			;
-		String g=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27 +(char)62 +(char)27 +(char)91 +(char)57 +(char)52 +(char)109	;
 		String h=""+(char)27 + (char)91 +(char)57 +(char)52  +(char)109																			;
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
 		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
-		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
-		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"").replace(n,"");
+			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"");
 		}
 		return result;
 	}
@@ -177,22 +178,23 @@ public class SystemCommandExecutor
 	public String[]			getStandardErrorFromCommand_string_clean_lines()	//remove non-printable colour stuff
 	{
 		String result[]=this.errorStreamHandler.getOutputBuffer().toString().split("\n");
+		String g=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27 +(char)62 +(char)27 +(char)91 +(char)57 +(char)52 +(char)109	;
+		String o=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52 +(char)109			;
+		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
+		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		String a=""+(char)27 + (char)91 +(char)51 +(char)50  +(char)109																			; 
 		String f=""+(char)27 + (char)91 +(char)51 +(char)49  +(char)109																			; 
 		String b=""+(char)27 + (char)91 +(char)48 +(char)109																					;
 		String c=""+(char)27 + (char)91 +(char)51 +(char)52  +(char)109																			;
 		String d=""+(char)27 + (char)91 +(char)51 +(char)50  +(char)109																			;
 		String e=""+(char)27 + (char)91 +(char)51 +(char)51  +(char)109																			;
-		String g=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27 +(char)62 +(char)27 +(char)91 +(char)57 +(char)52 +(char)109	;
 		String h=""+(char)27 + (char)91 +(char)57 +(char)52  +(char)109																			;
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
 		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
-		String m=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61 +(char)27 +(char)91 +(char)52						;
-		String n=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)104 +(char)27 +(char)61														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(g,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"").replace(n,"");
+			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"");
 		}
 		return result;
 	}
@@ -209,4 +211,9 @@ public class SystemCommandExecutor
 		return result;
 	}
 }
+
+
+
+
+
 
