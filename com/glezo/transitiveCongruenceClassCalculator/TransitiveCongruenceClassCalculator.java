@@ -3,6 +3,27 @@ package pruebasa;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/*cool self-describing name, huh?
+//input-----------------------------------
+{A,B,D}
+{C,D,D}
+{X,Y}
+{E,D}
+//1---------------------------------------
+{A,B,C,D}
+{X,Y}
+{E,D}
+//2---------------------------------------
+{A,B,C,D}
+{X,Y}
+{E,D}
+//3---------------------------------------
+{A,B,C,E,D}
+{X,Y}
+//output----------------------------------
+{A,B,C,E,D}
+{X,Y}
+*/
 
 
 public class TransitiveCongruenceClassCalculator 
