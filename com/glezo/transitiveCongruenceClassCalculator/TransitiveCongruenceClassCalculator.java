@@ -3,26 +3,35 @@ package pruebasa;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/*cool self-describing name, huh?
+/*
+cool self-describing name, huh?
+The algorithm computes the congruence classes from a certain input, considering that, if 
+any element e of an input element i belongs to another input element j, then we have to 
+transitive-collapse the congruence classes i and j into the output.
+The smallest element in i union j shall be considered as the congruence class representative
+That's the resason why the generic type T must implements Comparable<T>. 
+Though, if we don't need the smallest element in i union j to be the representative, but we can take
+any other element, there's no reason for T to implement equals.
+Let there be an example of the input, each recursive call, and the final output:
 //input-----------------------------------
 {A,B,D}
 {C,D,D}
 {X,Y}
 {E,D}
 //1---------------------------------------
-{A,B,C,D}
-{X,Y}
-{E,D}
+  {A,B,C,D}
+  {X,Y}
+  {E,D}
 //2---------------------------------------
-{A,B,C,D}
-{X,Y}
-{E,D}
+  {A,B,C,D}
+  {X,Y}
+  {E,D}
 //3---------------------------------------
-{A,B,C,E,D}
-{X,Y}
+  {A,B,C,E,D}
+  {X,Y}
 //output----------------------------------
-{A,B,C,E,D}
-{X,Y}
+  {A,B,C,E,D}
+  {X,Y}
 */
 
 
