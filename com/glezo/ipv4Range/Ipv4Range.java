@@ -25,6 +25,7 @@ public abstract class Ipv4Range implements Comparable<Ipv4Range>
 	public boolean							hasNext()						{	return this.hasNext;					}
 	public String							getASNumber_or_description()	{	return this.asnumber_or_description;	}
 
+	abstract public ArrayList<Ipv4>			toArrayList();
 	abstract public String					getNextIpAsString();
 	abstract public Ipv4					getNextIp();
 	abstract public boolean					ipBelongsToRange(Ipv4 ip);
