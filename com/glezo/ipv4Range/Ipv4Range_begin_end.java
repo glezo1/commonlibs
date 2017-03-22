@@ -60,6 +60,27 @@ public class Ipv4Range_begin_end extends Ipv4Range
 		return next_ip;
 	}
 	//--------------------------------------------------------------------------------------------------------------------------------------
+	public ArrayList<Ipv4>		toArrayList()
+	{
+		ArrayList<Ipv4> result=new ArrayList<Ipv4>();
+		Ipv4 aux_current_ip=this.first_ip;
+		boolean finished=false;
+		while(!finished)
+		{
+			if(aux_current_ip.equals(this.last_ip))
+			{
+				result.add(aux_current_ip);
+				finished=true;
+			}
+			else
+			{
+				result.add(aux_current_ip);
+				aux_current_ip=aux_current_ip.get_next_ip();
+			}
+		}
+		return result;
+	}
+	//---------------------------------------------------------------------------------------------------------
 	public boolean				ipBelongsToRange(Ipv4 ip) 
 	{
 		return (this.first_ip.getIp_as_long()<=ip.getIp_as_long()  && ip.getIp_as_long()<=this.last_ip.getIp_as_long());
