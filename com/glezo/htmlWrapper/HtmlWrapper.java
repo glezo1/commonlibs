@@ -24,6 +24,13 @@ import javax.net.ssl.X509TrustManager;
 
 public class HtmlWrapper 
 {
+	public static String			windows_chrome	="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36";
+	public static String			windows_firefox	="Mozilla/5.0 (Windows NT 6.2; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0";
+	public static String			windows_ie11	="Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv 11.0) like Gecko";
+	public static String			windows_ie10	="Mozilla/5.0 (compatible; WOW64; MSIE 10.0; Windows NT 6.2)";
+	public static String			windows_ie9		="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+	public static String			windows_ie8		="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)";
+	
 	private String					url_string;
 	private String					user_agent;
 	private String					method;
