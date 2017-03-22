@@ -74,6 +74,11 @@ public class Ipv4Range_custom_list extends Ipv4Range
 		return result;
 	}
 	//----------------------------------------------------------------------
+	public ArrayList<Ipv4>	toArrayList()
+	{
+		return this.customRange;
+	}
+	//----------------------------------------------------------------------
 	public boolean ipBelongsToRange(Ipv4 ip) 
 	{
 		return this.customRange.contains(ip);
