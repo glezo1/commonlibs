@@ -18,26 +18,28 @@ public class ParsedUrl
 	private boolean				port_by_default;
 	private String				server_side_path;
 	// /users/pictures/find.php?serie=01&cap=02
-	private String				server_side_target;			//example: /users/pictures/find.php
-	private ArrayList<String>	server_side_param_names;	//serie,cap
-	private ArrayList<String>	server_side_param_values;	//01,02
+	private String				server_side_target;					//example: /users/pictures/find.php
+	private ArrayList<String>	server_side_param_names;			//serie,cap
+	private ArrayList<String>	server_side_param_values;			//01,02
+	private ArrayList<String>	server_side_param_decoded_values;	//01,02
 	
 	//-------------------------------------------------------------------------------------------------------------
 	public ParsedUrl(String url,ParsedUrl parent_url)
 	{
-		this.raw_content				=url;
-		this.is_relative				=false;
-		this.relative_refers_to_parent	=parent_url;
-		this.protocol					=null;
-		this.subdomain					=null;
-		this.domain						=null;
-		this.tld						=null;
-		this.port						=null;
-		this.port_by_default			=false;
-		this.server_side_path			=null;
-		this.list_of_subdomains			=new ArrayList<String>();
-		this.server_side_param_names	=new ArrayList<String>();
-		this.server_side_param_values	=new ArrayList<String>();
+		this.raw_content						=url;
+		this.is_relative						=false;
+		this.relative_refers_to_parent			=parent_url;
+		this.protocol							=null;
+		this.subdomain							=null;
+		this.domain								=null;
+		this.tld								=null;
+		this.port								=null;
+		this.port_by_default					=false;
+		this.server_side_path					=null;
+		this.list_of_subdomains					=new ArrayList<String>();
+		this.server_side_param_names			=new ArrayList<String>();
+		this.server_side_param_values			=new ArrayList<String>();
+		this.server_side_param_decoded_values	=new ArrayList<String>();
 
 		//aux is the non-consumed part of the url
 		String aux=url;
@@ -189,6 +191,7 @@ public class ParsedUrl
 				{
 					this.server_side_param_names.add(current_param);
 					this.server_side_param_values.add(current_value);
+					this.server_side_param_decoded_values.add(ParsedUrl.decode_string(current_value));
 					current_param="";
 					current_value="";
 					state=0;
@@ -210,26 +213,28 @@ public class ParsedUrl
 			{
 				this.server_side_param_names.add(current_param);
 				this.server_side_param_values.add(current_value);
+				this.server_side_param_decoded_values.add(ParsedUrl.decode_string(current_value));
 			}
 		}
 		this.whole_path=this.calculate_whole_path();
 	}
 	//-------------------------------------------------------------------------------------------------------------
-	public String				get_raw_content()				{	return this.raw_content;				}
-	public String				get_whole_path()				{	return this.whole_path;					}
-	public String				get_protocol()					{	return this.protocol;					}
-	public String				get_subdomain()					{	return this.subdomain;					}
-	public String				get_domain()					{	return this.domain;						}
-	public String				get_tld()						{	return this.tld;						}
-	public Integer				get_port()						{	return this.port;						}
-	public String				get_server_side_path()			{	return this.server_side_path;			}
-	public ArrayList<String>	get_list_of_subdomains()		{	return this.list_of_subdomains;			}
-	public boolean				is_relative()					{	return this.is_relative;				}
-	public ParsedUrl			get_refer_parent()				{	return this.relative_refers_to_parent;	}
-	public String				get_server_side_target()		{	return this.server_side_target;			}
-	public ArrayList<String>	get_server_side_param_names()	{	return this.server_side_param_names;	}
-	public ArrayList<String>	get_server_side_param_values()	{	return this.server_side_param_values;	}
-	public String				toString()						{	return this.get_whole_path();			}
+	public String				get_raw_content()						{	return this.raw_content;						}
+	public String				get_whole_path()						{	return this.whole_path;							}
+	public String				get_protocol()							{	return this.protocol;							}
+	public String				get_subdomain()							{	return this.subdomain;							}
+	public String				get_domain()							{	return this.domain;								}
+	public String				get_tld()								{	return this.tld;								}
+	public Integer				get_port()								{	return this.port;								}
+	public String				get_server_side_path()					{	return this.server_side_path;					}
+	public ArrayList<String>	get_list_of_subdomains()				{	return this.list_of_subdomains;					}
+	public boolean				is_relative()							{	return this.is_relative;						}
+	public ParsedUrl			get_refer_parent()						{	return this.relative_refers_to_parent;			}
+	public String				get_server_side_target()				{	return this.server_side_target;					}
+	public ArrayList<String>	get_server_side_param_names()			{	return this.server_side_param_names;			}
+	public ArrayList<String>	get_server_side_param_values()			{	return this.server_side_param_values;			}
+	public ArrayList<String>	get_server_side_param_decoded_values()	{	return this.server_side_param_decoded_values;	}
+	public String				toString()								{	return this.get_whole_path();					}
 	//-------------------------------------------------------------------------------------------------------------
 	private String				calculate_whole_path()
 	{
@@ -326,7 +331,6 @@ public class ParsedUrl
 		return true;
 	}
 	//-------------------------------------------------------------------------------------------------------------
-	@Override
     public int					hashCode() 
 	{
 		String a=this.whole_path;
@@ -334,4 +338,41 @@ public class ParsedUrl
         return a.hashCode();
     }
 	//-------------------------------------------------------------------------------------------------------------
+    private static String		decode_string(String input)
+    {
+    	String result=input;
+    	boolean finished=false;
+    	while(!finished)
+    	{
+    		ArrayList<Integer> replacement_position=new ArrayList<Integer>();
+    		for(int i=0;i<result.length();i++)
+    		{
+    			if(result.charAt(i)=='%')
+    			{
+    				replacement_position.add(i);
+    			}
+    		}
+    		if(replacement_position.size()==0)
+    		{
+    			finished=true;
+    		}
+    		else
+    		{
+    			for(int i=0;i<replacement_position.size();i++)
+    			{
+    				int current_replacement_position=replacement_position.get(i);
+    				String replaced=result.substring(current_replacement_position+1, current_replacement_position+3);
+    				if(!replaced.equals("25")) //%25==%. will be replaced before return-ing
+    				{
+    					int replaced_int=Integer.parseInt(replaced, 16);
+    					String replacement=""+(char)replaced_int;
+    					result=result.replace("%"+replaced,replacement);
+    				}
+    			}
+    		}
+    	}
+    	result=result.replace("%25","%");
+    	return result;
+    }
+    //-------------------------------------------------------------------------------------------------------------
 }
