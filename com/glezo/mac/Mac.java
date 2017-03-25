@@ -1,6 +1,5 @@
 package com.glezo.mac;
 
-
 public class Mac 
 {
 	private String iso_mac;			//01:23:45:67:89:AB	[capital]
@@ -63,7 +62,30 @@ public class Mac
 		}
 	}
 	//-----------------------------------------------------------------------------------------
-	public String get_mac(String separator,boolean uppercase)
+	public Mac(long l) throws UnparseableMacException
+	{
+		String mac=Long.toString(l,16).toUpperCase();
+		for(int i=mac.length();i<12;i++)
+		{
+			mac="0"+mac;
+		}
+		this.iso_mac="";
+		for(int i=0;i<mac.length();i++)
+		{
+			if(i==2 || i==4 ||i==6 ||i==8 ||i==10)
+			{
+				this.iso_mac+=":";
+			}
+			char c_upper=mac.toUpperCase().charAt(i);
+			if(Character.digit(c_upper,16)==-1)
+			{
+				throw new UnparseableMacException("Unparseable mac: "+mac+". Wrong character at position "+i);
+			}
+			this.iso_mac+=c_upper;
+		}
+	}
+	//-----------------------------------------------------------------------------------------
+	public String			get_mac(String separator,boolean uppercase)
 	{
 		String sep="";
 		sep+=separator;
@@ -74,7 +96,7 @@ public class Mac
 		return result;
 	}
 	//-----------------------------------------------------------------------------------------
-	public String get_mac_oui(String separator,boolean uppercase)
+	public String			get_mac_oui(String separator,boolean uppercase)
 	{
 		String sep="";
 		sep+=separator;
@@ -85,7 +107,7 @@ public class Mac
 		return result;
 	}
 	//-----------------------------------------------------------------------------------------
-	public String toString()
+	public String			toString()
 	{
 		return this.iso_mac;
 	}
@@ -103,7 +125,7 @@ public class Mac
 		}
 	}
 	//-----------------------------------------------------------------------------------------
-	public boolean				equals(Object o)
+	public boolean			equals(Object o)
 	{
 		if(o==null)
 		{
@@ -118,6 +140,12 @@ public class Mac
 			Mac oo=(Mac)o;
 			return oo.iso_mac.equals(oo.iso_mac);
 		}
+	}
+	//-----------------------------------------------------------------------------------------
+	public long				toInteger()
+	{
+		String aux=this.get_mac("",true);
+		return Long.parseLong(aux,16);
 	}
 	//-----------------------------------------------------------------------------------------
 
