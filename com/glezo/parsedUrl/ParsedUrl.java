@@ -361,12 +361,20 @@ public class ParsedUrl
     			for(int i=0;i<replacement_position.size();i++)
     			{
     				int current_replacement_position=replacement_position.get(i);
-    				String replaced=result.substring(current_replacement_position+1, current_replacement_position+3);
+    				String replaced=null;
+   					replaced=result.substring(current_replacement_position+1,current_replacement_position+3);
     				if(!replaced.equals("25")) //%25==%. will be replaced before return-ing
     				{
     					int replaced_int=Integer.parseInt(replaced, 16);
     					String replacement=""+(char)replaced_int;
-    					result=result.replace("%"+replaced,replacement);
+    					//we can't do result=result.replace("%"+replaced,replacement);
+    					//if there are repeated patters, such as ho%XYatio%XYadios, the second pattern will be as well and will fuck as in the ass. 	
+    					result=result.replaceFirst("%"+replaced,replacement);
+    					//we have changed %XY by a char, so we need to update the pointers to the %
+    					for(int j=i+1;j<replacement_position.size();j++)
+    					{
+    						replacement_position.set(j,replacement_position.get(j)-2);
+    					}
     				}
     			}
     		}
