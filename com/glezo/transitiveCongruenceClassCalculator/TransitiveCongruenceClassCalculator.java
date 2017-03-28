@@ -1,4 +1,4 @@
-package pruebasa;
+package com.glezo.transitiveCongruenceClassCalculator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ transitive-collapse the congruence classes i and j into the output.
 The smallest element in i union j shall be considered as the congruence class representative
 That's the resason why the generic type T must implements Comparable<T>. 
 Though, if we don't need the smallest element in i union j to be the representative, but we can take
-any other element, there's no reason for T to implement equals.
+any other element, there's no reason for T to implement Comparable<T>.
 Let there be an example of the input, each recursive call, and the final output:
 //input-----------------------------------
 {A,B,D}
