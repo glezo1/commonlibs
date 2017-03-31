@@ -3,6 +3,7 @@ package com.glezo.language;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import com.glezo.alphabet.Alphabet;
 
 public class Language_prefix_middle_suffix implements Language
 {
