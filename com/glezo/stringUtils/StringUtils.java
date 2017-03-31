@@ -165,4 +165,65 @@ public class StringUtils
     	return "";
     }
 	//-----------------------------------------------------------------------------------------------------------------------
+	/*
+		StringUtils.consecutiveCollapseReplace(String input,ArrayList<String> pattern,ArrayList<String> replacement,String prefix,boolean show_times,String suffix)
+		input		:	input string
+		pattern		:	arraylist of patterns to be replaced
+		replacement	:	arraylist of the replacements, one for each pattern
+		show_times	:	if true, <pattern> will be replaced by		<replacement><prefix><#of_consecutive_appareances><suffix>.
+						otherwise, <pattern> will be replaced by 	<replacement><prefix><suffix>.
+	*/
+	public static String consecutiveCollapseReplace(String input,ArrayList<String> pattern,ArrayList<String> replacement,boolean show_times,String prefix,String suffix) throws IllegalArgumentException
+	{
+		if(pattern==null || replacement==null || pattern.size()!=replacement.size())
+		{
+			throw new IllegalArgumentException("Pattern and replacement musn't be null, and must have same size");
+		}
+		String result=input;
+		for(int i=0;i<pattern.size();i++)
+		{
+			String current_pattern=pattern.get(i);
+			String current_replacement=replacement.get(i);
+			int max_consecutive_appereance=1;
+			boolean finished=false;
+			while(!finished)
+			{
+				String pattern_n="";
+				for(int k=0;k<max_consecutive_appereance;k++){	pattern_n+=current_pattern;	}
+				if(result.contains(pattern_n))
+				{
+					max_consecutive_appereance++;
+				}
+				else
+				{
+					finished=true;
+				}
+			}
+			for(int k=max_consecutive_appereance-1;k>0;k--)
+			{
+				String pattern_n="";
+				for(int l=0;l<k;l++){	pattern_n+=current_pattern;	}
+				if(result.contains(pattern_n))
+				{
+					if(k>1)
+					{
+						if(show_times==true)
+						{
+							result=result.replace(pattern_n,current_replacement+prefix+k+suffix);
+						}
+						else
+						{
+							result=result.replace(pattern_n,current_replacement+prefix+suffix);
+						}
+					}
+					else
+					{
+						result=result.replace(current_pattern,current_replacement);
+					}
+				}
+			}
+		}
+		return result;
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
 }
