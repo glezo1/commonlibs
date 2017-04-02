@@ -153,9 +153,10 @@ public class SystemCommandExecutor
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
 		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
+		String m=""+(char)27 + (char)91 +(char)75 +(char)27  +(char)91  +(char)53 +(char)67														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"");
+			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"");
 		}
 		return result;
 	}
@@ -192,9 +193,10 @@ public class SystemCommandExecutor
 		String j=""+(char)27 + (char)91 +(char)57 +(char)49  +(char)109																			;
 		String k=""+(char)27 + (char)91 +(char)57 +(char)50  +(char)109																			;
 		String l=""+(char)27 + (char)91 +(char)63 +(char)49  +(char)108 +(char)27																;
+		String m=""+(char)27 + (char)91 +(char)75 +(char)27  +(char)91  +(char)53 +(char)67														;
 		for(int i=0;i<result.length;i++)
 		{
-			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"");
+			result[i]=result[i].replace(g,"").replace(o,"").replace(m,"").replace(n,"").replace(a,"").replace(b,"").replace(c,"").replace(d,"").replace(e,"").replace(f,"").replace(h,"").replace(j,"").replace(k,"").replace(l,"").replace(m,"");
 		}
 		return result;
 	}
