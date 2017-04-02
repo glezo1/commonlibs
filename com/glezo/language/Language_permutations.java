@@ -2,7 +2,7 @@ package com.glezo.language;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import com.glezo.alphabet;
+import com.glezo.alphabet.Alphabet;
 
 public class Language_permutations implements Language
 {
