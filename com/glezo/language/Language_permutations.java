@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.glezo.alphabet;
 
-public class Language_permutations extends Language
+public class Language_permutations implements Language
 {
 	private Alphabet	alphabet;
 	private int			current_string_state[];
@@ -23,9 +23,9 @@ public class Language_permutations extends Language
 		this.current_middle_part=this.getBaseCase();
 	}
 	//GETTERS-----------------------------------------------------------------------
-	public Alphabet	getAlphabet()				{	return this.alphabet;													}
-	public double	getNumberOfWords()			{	return Math.pow(this.alphabet.getNumberOfLetters(),this.word_length);	}
-	public double	getNumberOfBytes()			{	return Math.pow(this.word_length+1,this.getNumberOfWords());			}	
+	public Alphabet	getAlphabet()				{	return this.alphabet;														}
+	public long	getNumberOfWords()				{	return (long)Math.pow(this.alphabet.getNumberOfLetters(),this.word_length);	}
+	public long	getNumberOfBytes()				{	return (long)Math.pow(this.word_length+1,this.getNumberOfWords());			}	
 	//SETTERS-----------------------------------------------------------------------
 	public void		setAlphabet(Alphabet a)		{	this.alphabet=a;																					}
 	public void		setLength(int newLength)	{	this.word_length=newLength;	for(int i=0;i<this.word_length;i++){this.current_string_state[i]=0;}	}
