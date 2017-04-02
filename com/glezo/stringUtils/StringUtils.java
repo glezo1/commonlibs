@@ -88,7 +88,7 @@ public class StringUtils
 		return input.substring(first_significative_char_index,last_significative_char_index);
 	}
 	//-----------------------------------------------------------------------------------------------	
-	public static String				md5(String input) throws NoSuchAlgorithmException 
+	public static String		md5(String input) throws NoSuchAlgorithmException 
 	{
 		String result = input;
 		if(input != null) 
@@ -105,7 +105,7 @@ public class StringUtils
 		return result;
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static String				sha1(String input) throws NoSuchAlgorithmException 
+	public static String		sha1(String input) throws NoSuchAlgorithmException 
 	{
 		String result = input;
 		if(input != null) 
@@ -122,7 +122,32 @@ public class StringUtils
 		return result;
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------
-    public static String getHexString(byte[] raw)	throws UnsupportedEncodingException 
+	public static String		sha256(String input) throws NoSuchAlgorithmException 
+	{
+		String result = input;
+		if(input != null) 
+		{
+			MessageDigest md = MessageDigest.getInstance("SHA-256");
+			md.update(input.getBytes());
+			BigInteger hash = new BigInteger(1, md.digest());
+			result = hash.toString(16);
+			while(result.length() < 40) 
+			{
+				result = "0" + result;
+			}
+		}
+		return result;
+	}	
+	//-----------------------------------------------------------------------------------------------------------------------
+	public static byte[]		sha256(byte[] input) throws NoSuchAlgorithmException 
+	{
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(input);
+		byte[] hash=md.digest();
+		return hash;
+	}	
+	//-----------------------------------------------------------------------------------------------------------------------
+    public static String		getHexString(byte[] raw)	throws UnsupportedEncodingException 
     {
     	byte[] hex = new byte[2 * raw.length];
     	int index = 0;
@@ -136,7 +161,7 @@ public class StringUtils
     	return new String(hex, "ASCII");
     }
 	//-----------------------------------------------------------------------------------------------------------------------
-    public static String getHexString(short[] raw)	throws UnsupportedEncodingException 
+    public static String		getHexString(short[] raw)	throws UnsupportedEncodingException 
     {	
     	byte[] hex = new byte[2 * raw.length];
     	int index = 0;
@@ -150,7 +175,7 @@ public class StringUtils
     	return new String(hex, "ASCII");
     }
 	//-----------------------------------------------------------------------------------------------------------------------
-    public static String getHexString(short raw) 
+    public static String		getHexString(short raw) 
     {
     	byte[] hex = new byte[2];
     	int v = raw & 0xFF;
@@ -166,15 +191,22 @@ public class StringUtils
     	return "";
     }
 	//-----------------------------------------------------------------------------------------------------------------------
+    public static byte[]		concat_byte_arrays(byte[] a,byte[] b)
+    {
+    	byte[] result=new byte[a.length + b.length];
+    	for(int i=0; i<a.length;i++)	{	result[i]			=a[i];	}
+    	for(int i=0; i<b.length;i++)	{	result[a.length+i]	=b[i];	}
+    	return result;
+    }
+    //-----------------------------------------------------------------------------------------------------------------------
 	/*
-		StringUtils.consecutiveCollapseReplace(String input,ArrayList<String> pattern,ArrayList<String> replacement,String prefix,boolean show_times,String suffix)
 		input		:	input string
 		pattern		:	arraylist of patterns to be replaced
 		replacement	:	arraylist of the replacements, one for each pattern
 		show_times	:	if true, <pattern> will be replaced by		<replacement><prefix><#of_consecutive_appareances><suffix>.
 						otherwise, <pattern> will be replaced by 	<replacement><prefix><suffix>.
 	*/
-	public static String consecutiveCollapseReplace(String input,ArrayList<String> pattern,ArrayList<String> replacement,boolean show_times,String prefix,String suffix) throws IllegalArgumentException
+	public static String		consecutiveCollapseReplace(String input,ArrayList<String> pattern,ArrayList<String> replacement,boolean show_times,String prefix,String suffix) throws IllegalArgumentException
 	{
 		if(pattern==null || replacement==null || pattern.size()!=replacement.size())
 		{
