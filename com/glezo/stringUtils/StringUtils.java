@@ -191,11 +191,23 @@ public class StringUtils
     	return "";
     }
 	//-----------------------------------------------------------------------------------------------------------------------
-    public static byte[]		concat_byte_arrays(byte[] a,byte[] b)
+    public static byte[]		concat_byte_arrays(byte[] ...parts)
     {
-    	byte[] result=new byte[a.length + b.length];
-    	for(int i=0; i<a.length;i++)	{	result[i]			=a[i];	}
-    	for(int i=0; i<b.length;i++)	{	result[a.length+i]	=b[i];	}
+    	int total_length=0;
+    	for(byte[] current_part : parts)
+    	{
+    		total_length+=current_part.length;
+    	}
+    	byte[] result=new byte[total_length];
+    	int pointer=0;
+    	for(byte[] current_part : parts)
+    	{
+    		for(int i=0;i<current_part.length;i++)
+    		{
+    			result[pointer]=current_part[i];
+    			pointer++;
+    		}
+    	}
     	return result;
     }
     //-----------------------------------------------------------------------------------------------------------------------
