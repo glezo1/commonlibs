@@ -9,4 +9,6 @@ public interface Language
 	abstract public String				getNextDicionaryWord();
 	abstract public void				saveDictionaryToFile(String output_file_path);
 	abstract public ArrayList<String>	getWholeDictionary();
+	
+	public static final String			digits_upperhex="0123456789ABCDEF";
 }
