@@ -226,29 +226,29 @@ public class Wifi_password_engine
 				'A', 'B', 'C', 'D', 'E', 'F', '0', '1', '2', '3', '4', '5', '6',
 				'7', '8', '9', 'A',};
 		
+		byte[] cp = new byte[12];
+		cp[0]	= (byte) (char) 'C';
+		cp[1]	= (byte) (char) 'P';
 		//years 2005 -> 2015
 		for(int current_year=2005;current_year<=2016;current_year++)
 		{
+			int current_year_yy=current_year % 100;
+			cp[2] = (byte) Character.forDigit((current_year_yy / 10), 10);
+			cp[3] = (byte) Character.forDigit((current_year_yy % 10), 10);
 			for(int current_week=1;current_week<=52;current_week++)
 			{
+				cp[4] = (byte) Character.forDigit((current_week / 10), 10);
+				cp[5] = (byte) Character.forDigit((current_week % 10), 10);
 				for(int x1=0;x1<36;x1++)
 				{
+					cp[6]	=charectbytes0[x1];
+					cp[7]	=charectbytes1[x1];
 					for(int x2=0;x2<36;x2++)
 					{
+						cp[8]	=charectbytes0[x2];
+						cp[9]	=charectbytes1[x2];
 						for(int x3=0;x3<36;x3++)
 						{
-							byte[] cp = new byte[12];
-							cp[0]	= (byte) (char) 'C';
-							cp[1]	= (byte) (char) 'P';
-							int current_year_yy=current_year % 100;
-							cp[2] = (byte) Character.forDigit((current_year_yy / 10), 10);
-							cp[3] = (byte) Character.forDigit((current_year_yy % 10), 10);
-							cp[4] = (byte) Character.forDigit((current_week / 10), 10);
-							cp[5] = (byte) Character.forDigit((current_week % 10), 10);
-							cp[6]	=charectbytes0[x1];
-							cp[7]	=charectbytes1[x1];
-							cp[8]	=charectbytes0[x2];
-							cp[9]	=charectbytes1[x2];
 							cp[10]	=charectbytes0[x3];
 							cp[11]	=charectbytes1[x3];
 							
