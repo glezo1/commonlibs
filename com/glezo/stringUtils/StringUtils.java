@@ -122,6 +122,23 @@ public class StringUtils
 		return result;
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------
+	public static String		sha1(byte[] input) throws NoSuchAlgorithmException 
+	{
+		String result = null;
+		if(input != null) 
+		{
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
+			md.update(input);
+			BigInteger hash = new BigInteger(1, md.digest());
+			result = hash.toString(16);
+			while(result.length() < 40) 
+			{
+				result = "0" + result;
+			}
+		}
+		return result;
+	}	
+	//-----------------------------------------------------------------------------------------------------------------------
 	public static String		sha256(String input) throws NoSuchAlgorithmException 
 	{
 		String result = input;
