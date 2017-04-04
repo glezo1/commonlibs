@@ -252,8 +252,7 @@ public class Wifi_password_engine
 							cp[10]	=charectbytes0[x3];
 							cp[11]	=charectbytes1[x3];
 							
-							String foo=new String(cp);
-							String current_serial_sha1=StringUtils.sha1(foo).toUpperCase();
+							String current_serial_sha1=StringUtils.sha1(cp).toUpperCase();
 							if(current_serial_sha1.endsWith(eessid_suffix))
 							{
 								String password=current_serial_sha1.substring(0,10);
@@ -1068,7 +1067,7 @@ public class Wifi_password_engine
 		{
 			result.add(Wifi_password_engine.get_easybox_password(mac));
 		}
-		if(			mac.startsWith("00:14:7F"))
+		if(			mac.startsWith("00:14:7F")	||	mac.startsWith("00:90:D0")
 		{
 			result.add(Wifi_password_engine.speedtouch_keys(essid));
 		}
