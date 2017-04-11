@@ -1359,8 +1359,7 @@ public class Wifi_password_engine
                 ||	mac.startsWith("F8:4A:BF") || mac.startsWith("F8:98:B9") || mac.startsWith("F8:BF:09")
                 ||	mac.startsWith("F8:E8:11"))
         {
-			//TODO!
-			result.add(new PasswordDictionary("HG824xKeygen(eessid, mac)",null,"HG824xKeygen TODO! pending"));
+			result.add(Wifi_password_engine.HG824xKeygen(essid,mac_mac));
         }
 
         if (essid.matches("InfostradaWiFi-[0-9a-zA-Z]{6}"))
