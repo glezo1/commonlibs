@@ -1053,7 +1053,23 @@ public class Wifi_password_engine
 		try{mac_mac=new Mac(mac);} catch (UnparseableMacException e) {}
 		ArrayList<PasswordDictionary> result=new ArrayList<PasswordDictionary>();
 
-		
+		if(			(mac.startsWith("64:68:0C") && essid.matches("WLAN_([0-9a-fA-F]{4})") )
+				||	(mac.startsWith("00:1D:20") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")
+				||	(mac.startsWith("00:1B:20") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")
+				||	(mac.startsWith("00:23:F8") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")
+				||	(mac.startsWith("38:72:C0") && essid.matches("WLAN_([0-9a-fA-F]{4})") )
+				||	(mac.startsWith("30:39:F2") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")
+			)
+		{
+			result.add(Wifi_password_engine.comtrend_ct_536(mac,eessid);
+		}
+		else if(	mac.startsWith("64:68:0C") || mac.startsWith("00:1D:20") || mac.startsWith("00:1B:20") 
+				||	mac.startsWith("00:23:F8") || mac.startsWith("38:72:C0") || mac.startsWith("30:39:F2") 
+				)
+		{
+			result.add(Wifi_password_engine.comtrend_ct_536(mac);
+		}
+					 
 		if(			mac.startsWith("00:1F:A4"))
 		{
 			result.add(Wifi_password_engine.zyxel_P660_HW_B1A(mac, essid));
