@@ -1053,6 +1053,11 @@ public class Wifi_password_engine
 		try{mac_mac=new Mac(mac);} catch (UnparseableMacException e) {}
 		ArrayList<PasswordDictionary> result=new ArrayList<PasswordDictionary>();
 
+		if(mac.startsWith("9C:41:7C"))
+		{
+			result.add(Wifi_password_engine.ZTE_W5(mac));
+		}
+		
 		if(			(mac.startsWith("64:68:0C") && essid.matches("WLAN_([0-9a-fA-F]{4})")				)
 				||	(mac.startsWith("00:1D:20") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")	)
 				||	(mac.startsWith("00:1B:20") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")	)
