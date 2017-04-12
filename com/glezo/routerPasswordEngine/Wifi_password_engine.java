@@ -1066,13 +1066,13 @@ public class Wifi_password_engine
 				||	(mac.startsWith("30:39:F2") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")	)
 			)
 		{
-			result.add(Wifi_password_engine.comtrend_ct_536(mac,essid);
+			result.add(Wifi_password_engine.comtrend_ct_536(mac,essid));
 		}
 		else if(	mac.startsWith("64:68:0C") || mac.startsWith("00:1D:20") || mac.startsWith("00:1B:20") 
 				||	mac.startsWith("00:23:F8") || mac.startsWith("38:72:C0") || mac.startsWith("30:39:F2") 
 				)
 		{
-			result.add(Wifi_password_engine.comtrend_ct_536(mac);
+			result.add(Wifi_password_engine.comtrend_ct_536(mac));
 		}
 					 
 		if(			mac.startsWith("00:1F:A4"))
@@ -1088,7 +1088,7 @@ public class Wifi_password_engine
 		{
 			result.add(Wifi_password_engine.get_easybox_password(mac));
 		}
-		if(			mac.startsWith("00:14:7F")	||	mac.startsWith("00:90:D0")
+		if(			mac.startsWith("00:14:7F")	||	mac.startsWith("00:90:D0") )
 		{
 			result.add(Wifi_password_engine.speedtouch_keys(essid));
 		}
