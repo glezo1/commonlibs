@@ -7,6 +7,7 @@ public class ParsedUrl
 	private String				raw_content;
 	private String				whole_path;
 	private boolean				is_relative;
+	private boolean				is_anchor_relative;
 	private ParsedUrl			relative_refers_to_parent;
 	
 	private String				protocol;
@@ -28,6 +29,7 @@ public class ParsedUrl
 	{
 		this.raw_content						=url;
 		this.is_relative						=false;
+		this.is_anchor_relative					=false;
 		this.relative_refers_to_parent			=parent_url;
 		this.protocol							=null;
 		this.subdomain							=null;
@@ -112,6 +114,11 @@ public class ParsedUrl
 		}
 		else
 		{
+			if(aux.startsWith("#"))
+			{
+				this.is_relative		=true;
+				this.is_anchor_relative	=true;
+			}
 			int index_of_first_slash=aux.indexOf("/");
 			int num_dots_before_first_slash=0;
 			for(int i=0;i<index_of_first_slash;i++)
@@ -120,8 +127,8 @@ public class ParsedUrl
 			}
 			if(num_dots_before_first_slash==0)
 			{
-				this.is_relative=true;
-				this.server_side_path=aux;
+				this.is_relative		=true;
+				this.server_side_path	=aux;
 				this.protocol			=this.relative_refers_to_parent.protocol;
 				this.list_of_subdomains	=this.relative_refers_to_parent.list_of_subdomains;
 				this.domain				=this.relative_refers_to_parent.domain;
@@ -229,6 +236,7 @@ public class ParsedUrl
 	public String				get_server_side_path()					{	return this.server_side_path;					}
 	public ArrayList<String>	get_list_of_subdomains()				{	return this.list_of_subdomains;					}
 	public boolean				is_relative()							{	return this.is_relative;						}
+	public boolean				is_anchor_relative()					{	return this.is_anchor_relative;					}
 	public ParsedUrl			get_refer_parent()						{	return this.relative_refers_to_parent;			}
 	public String				get_server_side_target()				{	return this.server_side_target;					}
 	public ArrayList<String>	get_server_side_param_names()			{	return this.server_side_param_names;			}
