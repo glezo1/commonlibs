@@ -1090,15 +1090,19 @@ public class Wifi_password_engine
 		{
 			result.add(Wifi_password_engine.zyxel_P660_HW_B1A(mac, essid));
 		}
+		
 		if(			mac.startsWith("00:13:F7"))
 		{
 			result.add(Wifi_password_engine.SMC_7908_AISP_SMC_7908VoWBRA(mac,essid));
 		}
+		
 		if(			mac.startsWith("74:31:70")	||	mac.startsWith("84:9C:A6")	||	mac.startsWith("88:03:55")
-				||	mac.startsWith("1C:C6:3C")	||	mac.startsWith("50:7E:5D"))
+				||	mac.startsWith("1C:C6:3C")	||	mac.startsWith("50:7E:5D")	||	mac.startsWith("00:12:BF"))
 		{
 			result.add(Wifi_password_engine.get_easybox_password(mac));
+			result.add(Wifi_password_engine.vodafone_arcadyan_spain(mac_mac));
 		}
+		
 		if(			mac.startsWith("00:14:7F")	||	mac.startsWith("00:90:D0") )
 		{
 			result.add(Wifi_password_engine.speedtouch_keys(essid));
