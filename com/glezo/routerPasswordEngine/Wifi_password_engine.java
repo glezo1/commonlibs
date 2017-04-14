@@ -92,6 +92,17 @@ public class Wifi_password_engine
 		return result;
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				vodafone_arcadyan_spain(Mac bssid)
+	{
+		PasswordDictionary pre_result=Wifi_password_engine.get_easybox_password(bssid.get_mac(":",true));
+		ArrayList<String> words=new ArrayList<String>();
+		for(int i=0;i<pre_result.getWords().size();i++)
+		{
+			words.add(pre_result.getWords().get(i).replace("0","1"));
+		}
+		return new PasswordDictionary("vodafone_arcadyan_spain",words,"");
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
 	public static PasswordDictionary				SMC_7908_AISP_SMC_7908VoWBRA(String bssid,String essid)
 	{
 		//http://foro.seguridadwireless.net/desarrollo-112/wlan4xx-algoritmo-routers-yacom/
