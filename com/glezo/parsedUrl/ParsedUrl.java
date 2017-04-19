@@ -18,11 +18,11 @@ public class ParsedUrl
 	private Integer				port;
 	private boolean				port_by_default;
 	private String				server_side_path;
-	// /users/pictures/find.php?serie=01&cap=02
-	private String				server_side_target;					//example: /users/pictures/find.php
-	private ArrayList<String>	server_side_param_names;			//serie,cap
-	private ArrayList<String>	server_side_param_values;			//01,02
-	private ArrayList<String>	server_side_param_decoded_values;	//01,02
+	// 																/users/pictures/find.php?serie=01&cap=02
+	private String				server_side_target;					// /users/pictures/find.php
+	private ArrayList<String>	server_side_param_names;			// serie,cap
+	private ArrayList<String>	server_side_param_values;			// 01,02
+	private ArrayList<String>	server_side_param_decoded_values;	// 01,02
 	
 	//-------------------------------------------------------------------------------------------------------------
 	public ParsedUrl(String url,ParsedUrl parent_url)
@@ -223,6 +223,10 @@ public class ParsedUrl
 				this.server_side_param_decoded_values.add(ParsedUrl.decode_string(current_value));
 			}
 		}
+		else
+		{
+			this.server_side_target=this.server_side_path;
+		}
 		this.whole_path=this.calculate_whole_path();
 	}
 	//-------------------------------------------------------------------------------------------------------------
@@ -323,10 +327,20 @@ public class ParsedUrl
 	public boolean				equals_but_param_values(ParsedUrl another)
 	{
 		if(!this.protocol.equals(another.protocol))										{	return false;	}
-		if(!this.subdomain.equals(another.subdomain))									{	return false;	}
+		if(this.subdomain==null && another.subdomain!=null)								{	return false;	}
+		else if(this.subdomain!=null && another.subdomain==null)						{	return false;	}
+		else if((this.subdomain!=null && another.subdomain!=null)	
+				&&
+				(!this.subdomain.equals(another.subdomain))
+				)																		{	return false;	}
 		if(!this.domain.equals(another.domain))											{	return false;	}
 		if(!this.tld.equals(another.tld))												{	return false;	}
-		if(!this.server_side_target.equals(another.server_side_target))					{	return false;	}
+		if(this.server_side_target==null && another.server_side_target!=null)			{	return false;	}
+		else if(this.server_side_target!=null && another.server_side_target==null)		{	return false;	}
+		else if((this.server_side_target!=null && another.server_side_target!=null)
+				&&
+				!this.server_side_target.equals(another.server_side_target)
+				)																		{	return false;	}
 		if(this.server_side_param_names.size()!=another.server_side_param_names.size())	{	return false;	}
 		for(int i=0;i<this.server_side_param_names.size();i++)
 		{
