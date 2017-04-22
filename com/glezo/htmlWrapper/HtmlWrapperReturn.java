@@ -12,9 +12,10 @@ public class HtmlWrapperReturn
 	private String					raw_return;
 	private ArrayList<String>		lines_return;
 	private Exception				exception;
+	private int						num_tries_taken;
 	
 	
-	public HtmlWrapperReturn(int retcode,String redirects_to,String content_type,String raw_return,Exception exception)
+	public HtmlWrapperReturn(int retcode,String redirects_to,String content_type,String raw_return,Exception exception,int num_tries_taken)
 	{
 		this.return_code	=retcode;
 		this.redirects_to	=redirects_to;
@@ -35,6 +36,7 @@ public class HtmlWrapperReturn
 			}
 		}
 		this.exception		=exception;
+		this.num_tries_taken=num_tries_taken;
 	}
 	public HtmlWrapperReturn(String raw_return,ArrayList<String> lines_return,ArrayList<String> tokens_return,Exception exception)
 	{
@@ -48,4 +50,5 @@ public class HtmlWrapperReturn
 	public String				get_raw_return()			{	return this.raw_return;				}
 	public ArrayList<String>	get_lines_return()			{	return this.lines_return;			}
 	public Exception			get_exception()				{	return this.exception;				}
+	public int					get_num_tries_taken()		{	return this.num_tries_taken;		}
 }
