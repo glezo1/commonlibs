@@ -14,8 +14,6 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -24,13 +22,6 @@ import javax.net.ssl.X509TrustManager;
 
 public class HtmlWrapper 
 {
-	public static String			windows_chrome	="Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36";
-	public static String			windows_firefox	="Mozilla/5.0 (Windows NT 6.2; WOW64; rv:21.0) Gecko/20100101 Firefox/21.0";
-	public static String			windows_ie11	="Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv 11.0) like Gecko";
-	public static String			windows_ie10	="Mozilla/5.0 (compatible; WOW64; MSIE 10.0; Windows NT 6.2)";
-	public static String			windows_ie9		="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
-	public static String			windows_ie8		="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)";
-	
 	private String					url_string;
 	private String					user_agent;
 	private String					method;
@@ -117,6 +108,8 @@ public class HtmlWrapper
 	}
 	//-------------------------------------------------------------------------------------------------------------------------
 	public HtmlProxy				getProxy()	{	return this.proxy;	}
+	public InetSocketAddress		getTor()	{	return this.tor;	}
+	public String					getMethod()	{	return this.method;	}
 	//-------------------------------------------------------------------------------------------------------------------------
 	public void						setRequestProperty(String k,String v)					
 	{	
@@ -133,126 +126,112 @@ public class HtmlWrapper
 		String		result				=null;
 		Exception	exception			=null;
 		
-		try
+		int			num_try				=0;
+		for(num_try=0;num_try<num_retries;num_try++)
 		{
-			if(this.tor==null)
+			exception=null;
+			try
 			{
-				this.connection.connect();
-				response_code=this.connection.getResponseCode();
-				redirects_to=this.connection.getHeaderField("Location");
-				content_type=this.connection.getContentType();
-				/*	I've seen things you people wouldn't believe. 
-					Attack ships on fire off the shoulder of Orion.
-					nginx 0.5.33 returning null/not null content type randomly for the same url when being crawled.
-					All those moments will be lost in time, like tears in rain.
-				*/
-				if(content_type==null)
+				if(this.tor==null)
 				{
-					for(int i=0;i<num_retries && content_type==null;i++)
+					this.connection.connect();
+					response_code=this.connection.getResponseCode();
+					redirects_to=this.connection.getHeaderField("Location");
+					content_type=this.connection.getContentType();
+					/*	I've seen things you people wouldn't believe. 
+						Attack ships on fire off the shoulder of Orion.
+						nginx 0.5.33 returning null/not null content type randomly for the same url when being crawled.
+						All those moments will be lost in time, like tears in rain.
+					*/
+					if(content_type!=null && content_type.contains("text/html"))
 					{
-						HttpURLConnection urlConnectionB = (HttpURLConnection)this.url.openConnection();
-						urlConnectionB.setRequestProperty("User-Agent",this.user_agent);
-						urlConnectionB.setRequestMethod(this.method);
-						urlConnectionB.setConnectTimeout(1000*this.connect_timeout);
-						urlConnectionB.setReadTimeout(1000*this.read_timeout);
-						urlConnectionB.setInstanceFollowRedirects(this.follow_redirect);
-						Iterator<Entry<String,String>> it=this.properties.entrySet().iterator();
-						while(it.hasNext())
+						String normal_output=null;
+						String error_output=null;
+						try
 						{
-							Entry<String,String> current_entry=it.next();
-							urlConnectionB.setRequestProperty(current_entry.getKey(),current_entry.getValue());
+							DataInputStream dis=null;
+							dis = new DataInputStream(this.connection.getInputStream());
+							String inputLine = null;
+							while ((inputLine = dis.readLine()) != null) 
+							{
+								if(normal_output==null)	{	normal_output=inputLine+"\n";	}
+								else					{	normal_output+=inputLine+"\n";	}
+							}
+							dis.close();
+							this.connection.disconnect();
 						}
-						urlConnectionB.connect();
-						content_type=urlConnectionB.getContentType();
+						catch(IOException e)
+						{
+						}
+						try
+						{
+							DataInputStream dis=null;
+							dis = new DataInputStream(this.connection.getErrorStream());
+							String inputLine = null;
+							while ((inputLine = dis.readLine()) != null) 
+							{
+								if(error_output==null)	{	error_output=inputLine+"\n";	}
+								else					{	error_output+=inputLine+"\n";	}
+							}
+							dis.close();
+							this.connection.disconnect();
+						}
+						catch(IOException e)
+						{
+						}
+						catch(NullPointerException e)
+						{
+						}
+						if(normal_output!=null)		{	result=normal_output;	}
+						else						{	result=error_output;	}
 					}
-				}
-				else if(content_type.equals("audio/mpeg"))
-				{
-					
 				}
 				else
 				{
-					String normal_output=null;
-					String error_output=null;
-					try
+					InputStream in = this.url.openConnection(new Proxy(Proxy.Type.SOCKS,this.tor)).getInputStream();
+					ByteArrayOutputStream bout = new ByteArrayOutputStream();
+					byte[] stuff = new byte[1024];
+					int readBytes = 0;
+					while((readBytes = in.read(stuff))>0) 
 					{
-						DataInputStream dis=null;
-						dis = new DataInputStream(this.connection.getInputStream());
-						String inputLine = null;
-						while ((inputLine = dis.readLine()) != null) 
-						{
-							if(normal_output==null)	{	normal_output=inputLine+"\n";	}
-							else					{	normal_output+=inputLine+"\n";	}
-						}
-						dis.close();
-						this.connection.disconnect();
+						bout.write(stuff,0,readBytes);
 					}
-					catch(IOException e)
-					{
-					}
-					try
-					{
-						DataInputStream dis=null;
-						dis = new DataInputStream(this.connection.getErrorStream());
-						String inputLine = null;
-						while ((inputLine = dis.readLine()) != null) 
-						{
-							if(error_output==null)	{	error_output=inputLine+"\n";	}
-							else					{	error_output+=inputLine+"\n";	}
-						}
-						dis.close();
-						this.connection.disconnect();
-					}
-					catch(IOException e)
-					{
-					}
-					catch(NullPointerException e)
-					{
-					}
-					if(normal_output!=null)		{	result=normal_output;	}
-					else						{	result=error_output;	}
+					byte[] result_byte_array = bout.toByteArray();
+					result=new String(result_byte_array);
+					//TODO!
+					response_code=0;
+					redirects_to=null;
+					content_type=null;
+					exception=null;
 				}
-			}
-			else
+			}				
+			catch (MalformedURLException e) 
 			{
-				InputStream in = this.url.openConnection(new Proxy(Proxy.Type.SOCKS,this.tor)).getInputStream();
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				byte[] stuff = new byte[1024];
-				int readBytes = 0;
-				while((readBytes = in.read(stuff))>0) 
-				{
-					bout.write(stuff,0,readBytes);
-				}
-				byte[] result_byte_array = bout.toByteArray();
-				result=new String(result_byte_array);
-				//TODO!
-				response_code=0;
-				redirects_to=null;
-				content_type=null;
-				exception=null;
+				exception=e;
 			}
-		}				
-		catch (MalformedURLException e) 
-		{
-			exception=e;
+			catch(ProtocolException e)
+			{
+				exception=e;
+			}
+			catch(SocketTimeoutException e)
+			{
+				exception=e;
+			}
+			catch(SocketException e)
+			{
+				exception=e;
+			}
+			catch(IOException e)
+			{
+				exception=e;
+			}
+			if(content_type!=null && exception==null)
+			{
+				return new HtmlWrapperReturn(response_code,redirects_to,content_type,result,exception,num_try);
+			}
 		}
-		catch(ProtocolException e)
-		{
-			exception=e;
-		}
-		catch(SocketTimeoutException e)
-		{
-			exception=e;
-		}
-		catch(SocketException e)
-		{
-			exception=e;
-		}
-		catch(IOException e)
-		{
-			exception=e;
-		}
-		return new HtmlWrapperReturn(response_code,redirects_to,content_type,result,exception);
+		//with exception!=null or content_type==null
+		return new HtmlWrapperReturn(response_code,redirects_to,content_type,result,exception,num_try);
 	}
 	//-------------------------------------------------------------------------------------------------------------------------
 
