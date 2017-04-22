@@ -27,6 +27,6 @@ public class N2Tuple<A,B>
 				&&
 				(	(this.b==null && oo_b==null) || (this.b!=null && oo_b!=null && this.b.equals(oo_b))	);
 	}
-	public int		hashCode()	{	return this.a.hashCode() ^this.b.hashCode();	}
+	public int		hashCode()	{	return this.a.hashCode() ^ this.b.hashCode();	}
 	public String	toString()	{	return this.a.toString()+" "+this.b.toString();	}
 }
