@@ -28,7 +28,7 @@ public class Wifi_password_engine
 	//PASSWORD ALGORITHMS----------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				get_easybox_password(String bssid)
+	public static PasswordDictionary				get_easybox_password(Mac bssid)
 	{
 		//glezo
 		/*
@@ -50,8 +50,7 @@ public class Wifi_password_engine
 			1C:C6:3C 
 			50:7E:5D
 		 */
-		String last_two_bytes=bssid.substring(12);
-		last_two_bytes=last_two_bytes.replace(":","");
+		String last_two_bytes=bssid.get_mac(":",true).substring(12).replace(":","");
 		int last_two_bytes_hex=Integer.parseInt(last_two_bytes, 16);
 		String last_two_bytes_hex_string=Integer.toString(last_two_bytes_hex);
 		while(last_two_bytes_hex_string.length()!=5)
@@ -65,10 +64,10 @@ public class Wifi_password_engine
 		String S10	=""+last_two_bytes_hex_string.charAt(4);
 		//String M7	=""+bessid.charAt(9);
 		//String M8	=""+bessid.charAt(10);
-		String M9	=""+bssid.charAt(12); 
-		String M10	=""+bssid.charAt(13);
-		String M11	=""+bssid.charAt(15);
-		String M12	=""+bssid.charAt(16);
+		String M9	=""+bssid.get_mac(":",true).charAt(12); 
+		String M10	=""+bssid.get_mac(":",true).charAt(13);
+		String M11	=""+bssid.get_mac(":",true).charAt(15);
+		String M12	=""+bssid.get_mac(":",true).charAt(16);
 		int k1_double_int=	Integer.parseInt(S7,16)+Integer.parseInt(S8,16)	+Integer.parseInt(M11,16)+Integer.parseInt(M12,16);
 		String k1=Integer.toString(k1_double_int, 16);
 		k1=k1.substring(k1.length()-1,k1.length()).toUpperCase();
@@ -94,7 +93,7 @@ public class Wifi_password_engine
 	//-----------------------------------------------------------------------------------------------------------------------
 	public static PasswordDictionary				vodafone_arcadyan_spain(Mac bssid)
 	{
-		PasswordDictionary pre_result=Wifi_password_engine.get_easybox_password(bssid.get_mac(":",true));
+		PasswordDictionary pre_result=Wifi_password_engine.get_easybox_password(bssid);
 		ArrayList<String> words=new ArrayList<String>();
 		for(int i=0;i<pre_result.getWords().size();i++)
 		{
@@ -103,7 +102,7 @@ public class Wifi_password_engine
 		return new PasswordDictionary("vodafone_arcadyan_spain",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				SMC_7908_AISP_SMC_7908VoWBRA(String bssid,String essid)
+	public static PasswordDictionary				SMC_7908_AISP_SMC_7908VoWBRA(Mac bssid,String essid)
 	{
 		//http://foro.seguridadwireless.net/desarrollo-112/wlan4xx-algoritmo-routers-yacom/
 		//glezo
@@ -131,8 +130,8 @@ public class Wifi_password_engine
 		String S8	=""+essid.charAt(7);
 		String S9	=""+essid.charAt(8);
 		String S10	=""+essid.charAt(9);
-		String M11	=""+bssid.charAt(15);
-		String M12	=""+bssid.charAt(16);
+		String M11	=""+bssid.get_mac(":",true).charAt(15);
+		String M12	=""+bssid.get_mac(":",true).charAt(16);
 		
 		int k2_double_int=	Integer.parseInt(M9,16)+Integer.parseInt(M10,16)+Integer.parseInt(S9,16)+Integer.parseInt(S10,16);
 		String k2=Integer.toString(k2_double_int,16);
@@ -166,7 +165,7 @@ public class Wifi_password_engine
 		
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				zyxel_P660_HW_B1A(String bessid,String eessid)	throws NoSuchAlgorithmException
+	public static PasswordDictionary				zyxel_P660_HW_B1A(Mac bssid,String eessid)	throws NoSuchAlgorithmException
 	{
 		//http://utilidades.gatovolador.net/wlan/
 		//glezo
@@ -176,7 +175,7 @@ public class Wifi_password_engine
 			return new PasswordDictionary("zyxel_P660_HW_B1A",new ArrayList<String>(),"Null essid");
 		}
 
-		String a=bessid.replaceAll(":","").substring(0, 8).toLowerCase();
+		String a=bssid.get_mac("",false).substring(0, 8);
 		String b=eessid.toLowerCase();
 		String c=b.substring(b.length()-4,b.length());
 		String d=StringUtils.md5(a+c);
@@ -186,10 +185,10 @@ public class Wifi_password_engine
 		return new PasswordDictionary("zyxel_P660_HW_B1A",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				comtrend_ct_536(String bessid,String eessid)	throws NoSuchAlgorithmException
+	public static PasswordDictionary				comtrend_ct_536(Mac bssid,String eessid)	throws NoSuchAlgorithmException
 	{
 		//http://utilidades.gatovolador.net/wlan/
-		String b=bessid.replaceAll(":","").toUpperCase();
+		String b=bssid.get_mac("",true);
 		String e=eessid.toUpperCase();
 		
 		String o=b.substring(0,8);
@@ -202,23 +201,23 @@ public class Wifi_password_engine
 		return new PasswordDictionary("comtrend_ct_536",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				comtrend_ct_536(String bessid)					throws NoSuchAlgorithmException
+	public static PasswordDictionary				comtrend_ct_536(Mac bssid)					throws NoSuchAlgorithmException
 	{
 		//http://utilidades.gatovolador.net/wlan/
-		String b=bessid.replaceAll(":","").toUpperCase();
+		String b=bssid.get_mac("",true);
 		String c=b.substring(b.length()-4,b.length());
 		String A=Integer.toString(Integer.parseInt(c,16)-3,16).toUpperCase();
 		String B=Integer.toString(Integer.parseInt(c,16)-1,16).toUpperCase();
 		String C=c;
 		
-		String d=bessid.replaceAll(":","").substring(0,8);
+		String d=bssid.get_mac("",true).substring(0,8);
 
 		ArrayList<String> result=new ArrayList<String>();
-		result.add(StringUtils.md5("bcgbghgg"+d+A+bessid.replaceAll(":","")).substring(0,20));
-		result.add(StringUtils.md5("bcgbghgg"+d+B+bessid.replaceAll(":","")).substring(0,20));
-		result.add(StringUtils.md5("bcgbghgg"+d+C+bessid.replaceAll(":","")).substring(0,20)); 
-		//TODO! esto creo que es un fallo del algoritmo, que resta 4 últimos chars para evitar el ' o ' cuando creo que debería quitar 3
-		result.add(StringUtils.md5("bcgbghgg"+d+C+bessid.replaceAll(":","")).substring(0,19)); 
+		result.add(StringUtils.md5("bcgbghgg"+d+A+bssid.get_mac("",true)).substring(0,20));
+		result.add(StringUtils.md5("bcgbghgg"+d+B+bssid.get_mac("",true)).substring(0,20));
+		result.add(StringUtils.md5("bcgbghgg"+d+C+bssid.get_mac("",true)).substring(0,20)); 
+		//bug in the original algorithm: it substracts the last 4 chars to avoid the ' o ' when it should've removed 3 instead
+		result.add(StringUtils.md5("bcgbghgg"+d+C+bssid.get_mac("",true)).substring(0,19)); 
 		return new PasswordDictionary("comtrend_ct_536",result,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
@@ -277,21 +276,24 @@ public class Wifi_password_engine
 		return new PasswordDictionary("speedtouch_keys",result,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				ZTE_W5(String bssid)
+	public static PasswordDictionary				ZTE_W5(Mac bssid)
 	{
 		//twitter:
-		String result=bssid.substring(10,bssid.length()).replaceAll(":","").toLowerCase();
+		String bssid_string=bssid.get_mac("",false);
+		String result=bssid_string.substring(10,bssid_string.length());
 		ArrayList<String> words=new ArrayList<String>();
 		words.add(result);
 		return new PasswordDictionary("ZTE_W5",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				xavi_comtrend_zyxel(String essid,String mac)
+	public static PasswordDictionary				xavi_comtrend_zyxel(String essid,Mac bssid)
 	{
+		String mac=bssid.get_mac(":",true);
 		boolean essid_matches=false;
 		if(essid.length()==7 && essid.matches("WLAN_[0-9a-fA-F]{2}") &&  essid.substring(5).equals(mac.substring(15)))	{	essid_matches=true;}
 		
 		String prefix=null;
+		
 		
         if(		mac.startsWith("00:01:36"))	{prefix="X000138";	}
         else if(mac.startsWith("00:01:38"))	{prefix="X000138";	}
@@ -468,7 +470,7 @@ public class Wifi_password_engine
 		return new PasswordDictionary("SitecomWLR341_400xKeygen",words,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				HuaweiKeygen(String essid,String bssid)
+	public static PasswordDictionary				HuaweiKeygen(String essid,Mac bssid)
 	{
 		ArrayList<String> result=new ArrayList<String>();
 		// Java adaptation of mac2wepkey.py from http://websec.ca/blog/view/mac2wepkey_huawei
@@ -523,12 +525,11 @@ public class Wifi_password_engine
 		final int[] n33 = {0, 4, 9, 13, 3, 7, 10, 14, 7, 3, 14, 10, 4, 0, 13, 9};
 		final int[] key = {30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 61, 62, 63, 64, 65, 66};
 		final char[] ssid = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
-		final String ssidIdentifier;
 
 		int[] mac = new int[12];
 		for (int i = 0; i < 12; ++i) 
 		{
-			mac[i] = Integer.parseInt(bssid.replace(":","").substring(i, i + 1), 16);
+			mac[i] = Integer.parseInt(bssid.get_mac("",true).substring(i, i + 1), 16);
 		}
 		int s1 = (n1[mac[0]]) ^ (a4[mac[1]]) ^ (a6[mac[2]]) ^ (a1[mac[3]])
 				^ (a11[mac[4]]) ^ (n20[mac[5]]) ^ (a10[mac[6]]) ^ (a4[mac[7]])
@@ -573,8 +574,9 @@ public class Wifi_password_engine
 		return new PasswordDictionary("HuaweiKeygen",result,"");
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				ComtrendKeygen(String essid,String bssid)
+	public static PasswordDictionary				ComtrendKeygen(String essid,Mac bssid)
 	{
+		SUUUUU! corregir
 		ArrayList<String> result=new ArrayList<String>();
 		final String	magic		= "bcgbghgg";
 		final String	lowermagic	= "64680C";
@@ -582,6 +584,7 @@ public class Wifi_password_engine
 		final String	mac001a2b	= "001A2B";
 	
 		final String ssidIdentifier = essid.substring(essid.length() - 4);
+		//TODO! abstraer md5
 		MessageDigest md;
 		try 
 		{
@@ -591,7 +594,7 @@ public class Wifi_password_engine
 		{
 			return null;
 		}
-		final String mac = bssid;
+		final String mac = bssid.get_mac("",true);
 		try 
 		{
 			if (mac.substring(0, 6).equalsIgnoreCase(mac001a2b)) 
@@ -601,6 +604,7 @@ public class Wifi_password_engine
 					md.reset();
 					md.update(magic.getBytes("ASCII"));
 					String xx;
+					String yy;
 					if (i < 256) 
 					{
 						md.update(lowermagic.getBytes("ASCII"));
@@ -620,30 +624,58 @@ public class Wifi_password_engine
 					md.update(mac.getBytes("ASCII"));
 					byte[] hash = md.digest();
 					result.add(StringUtils.getHexString(hash).substring(0, 20));
+					String foo=StringUtils.getHexString(hash).substring(0, 20);
+					String bar=null;
+					if(i<256)
+					{
+						yy = Integer.toHexString(i).toUpperCase(Locale.US);
+					}
+					else
+					{
+						yy = Integer.toHexString(i - 256).toUpperCase(Locale.US);
+					}
+					while (yy.length() < 2)
+					{
+						yy = "0" + yy;
+					}
+					if(i<256)
+					{
+						bar=StringUtils.md5(StringUtils.concat_byte_arrays(lowermagic.getBytes("ASCII"),yy.getBytes("ASCII"),ssidIdentifier.getBytes("ASCII"),mac.getBytes("ASCII")));
+					}
+					else
+					{
+						bar=StringUtils.md5(StringUtils.concat_byte_arrays(highermagic.getBytes("ASCII"),yy.getBytes("ASCII"),ssidIdentifier.getBytes("ASCII"),mac.getBytes("ASCII")));
+					}
+					System.out.println(foo);
+					System.out.println(bar.substring(0,20));
 				}
 			} 
 			else 
 			{
 				final String macMod = mac.substring(0, 8) + ssidIdentifier;
-				md.reset();
-				md.update(magic.getBytes("ASCII"));
-				md.update(macMod.toUpperCase(Locale.getDefault()).getBytes("ASCII"));
-				md.update(mac.toUpperCase(Locale.getDefault()).getBytes("ASCII"));
-				byte[] hash = md.digest();
-				result.add(StringUtils.getHexString(hash).substring(0, 20));
+				result.add(StringUtils.md5(StringUtils.concat_byte_arrays(	magic.getBytes("ASCII")
+																			,macMod.toUpperCase(Locale.getDefault()).getBytes("ASCII")
+																			,mac.toUpperCase(Locale.getDefault()).getBytes("ASCII")
+																		)
+											).substring(0,20));
 			}
 			return new PasswordDictionary("ComtrendKeygen",result,"");
 		} 
 		catch (UnsupportedEncodingException e) 
 		{
 		}
+		catch(NoSuchAlgorithmException e)
+		{
+		}
 		return null;
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static PasswordDictionary				ArcadyanKeygen(String essid,String bssid)
+	public static PasswordDictionary				ArcadyanKeygen(String essid,Mac bssid)
 	{
 		ArrayList<String> result=new ArrayList<String>();
-		String C1 = Integer.toString(Integer.parseInt(bssid.replace(":","").substring(8), 16));
+		
+		String bssid_string=bssid.get_mac("",true);
+		String C1 = Integer.toString(Integer.parseInt(bssid_string.substring(8), 16));
 
 		while (C1.length() < 5)
 		{
@@ -654,10 +686,10 @@ public class Wifi_password_engine
 		final char S8 = C1.charAt(2);
 		final char S9 = C1.charAt(3);
 		final char S10 = C1.charAt(4);
-		final char M9 = bssid.charAt(8);
-		final char M10 = bssid.charAt(9);
-		final char M11 = bssid.charAt(10);
-		final char M12 = bssid.charAt(11);
+		final char M9 = bssid_string.charAt(8);
+		final char M10 = bssid_string.charAt(9);
+		final char M11 = bssid_string.charAt(10);
+		final char M12 = bssid_string.charAt(11);
 
 		final String tmpK1 = Integer.toHexString(Character.digit(S7, 16)
 				+ Character.digit(S8, 16) + Character.digit(M11, 16)
@@ -1175,10 +1207,10 @@ public class Wifi_password_engine
 	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static ArrayList<PasswordDictionary>		from_router_to_passwords(String mac,String essid) throws NoSuchAlgorithmException
+	public static ArrayList<PasswordDictionary>		from_router_to_passwords(Mac bssid,String essid) throws NoSuchAlgorithmException
 	{
-		Mac mac_mac=null;
-		try{mac_mac=new Mac(mac);} catch (UnparseableMacException e) {}
+		String mac=bssid.get_mac(":",true);
+		
 		ArrayList<PasswordDictionary> result=new ArrayList<PasswordDictionary>();
 
 		if(essid.matches("Discus--([0-9a-fA-F]{6})"))
@@ -1187,19 +1219,19 @@ public class Wifi_password_engine
 		}
 		if(essid.matches("DLink-([0-9a-fA-F]{6})"))
 		{
-			result.add(Wifi_password_engine.Dlink(mac_mac));
+			result.add(Wifi_password_engine.Dlink(bssid));
 		}
         if(essid.matches("[eE]ircom[0-7]{4} ?[0-7]{4}") || mac.startsWith("00:0F:CC")	) 
         {
-        	result.add(Wifi_password_engine.Eircom(mac_mac));
+        	result.add(Wifi_password_engine.Eircom(bssid));
         }
         if (essid.matches("InfostradaWiFi-[0-9a-zA-Z]{6}"))
         {
-			result.add(Wifi_password_engine.Infostrada(mac_mac));
+			result.add(Wifi_password_engine.Infostrada(bssid));
         }
 		if(mac.startsWith("9C:41:7C"))
 		{
-			result.add(Wifi_password_engine.ZTE_W5(mac));
+			result.add(Wifi_password_engine.ZTE_W5(bssid));
 		}
 		
 		if(			(mac.startsWith("64:68:0C") && essid.matches("WLAN_([0-9a-fA-F]{4})")				)
@@ -1210,30 +1242,30 @@ public class Wifi_password_engine
 				||	(mac.startsWith("30:39:F2") && essid.matches("(?:WLAN|JAZZTEL)_([0-9a-fA-F]{4})")	)
 			)
 		{
-			result.add(Wifi_password_engine.comtrend_ct_536(mac,essid));
+			result.add(Wifi_password_engine.comtrend_ct_536(bssid,essid));
 		}
 		else if(	mac.startsWith("64:68:0C") || mac.startsWith("00:1D:20") || mac.startsWith("00:1B:20") 
 				||	mac.startsWith("00:23:F8") || mac.startsWith("38:72:C0") || mac.startsWith("30:39:F2") 
 				)
 		{
-			result.add(Wifi_password_engine.comtrend_ct_536(mac));
+			result.add(Wifi_password_engine.comtrend_ct_536(bssid));
 		}
 					 
 		if(			mac.startsWith("00:1F:A4"))
 		{
-			result.add(Wifi_password_engine.zyxel_P660_HW_B1A(mac, essid));
+			result.add(Wifi_password_engine.zyxel_P660_HW_B1A(bssid, essid));
 		}
 		
 		if(			mac.startsWith("00:13:F7"))
 		{
-			result.add(Wifi_password_engine.SMC_7908_AISP_SMC_7908VoWBRA(mac,essid));
+			result.add(Wifi_password_engine.SMC_7908_AISP_SMC_7908VoWBRA(bssid,essid));
 		}
 		
 		if(			mac.startsWith("74:31:70")	||	mac.startsWith("84:9C:A6")	||	mac.startsWith("88:03:55")
 				||	mac.startsWith("1C:C6:3C")	||	mac.startsWith("50:7E:5D")	||	mac.startsWith("00:12:BF"))
 		{
-			result.add(Wifi_password_engine.get_easybox_password(mac));
-			result.add(Wifi_password_engine.vodafone_arcadyan_spain(mac_mac));
+			result.add(Wifi_password_engine.get_easybox_password(bssid));
+			result.add(Wifi_password_engine.vodafone_arcadyan_spain(bssid));
 		}
 		
 		if(			mac.startsWith("00:14:7F")	||	mac.startsWith("00:90:D0") )
@@ -1249,7 +1281,7 @@ public class Wifi_password_engine
         		||	mac.startsWith("40:4A:03")	||	mac.startsWith("50:67:F0")	||	mac.startsWith("E0:91:53")
         	)
         {
-        	result.add(Wifi_password_engine.xavi_comtrend_zyxel(essid,mac));
+        	result.add(Wifi_password_engine.xavi_comtrend_zyxel(essid,bssid));
         }
 		
 		
@@ -1284,7 +1316,7 @@ public class Wifi_password_engine
                 ||	mac.startsWith("88:25:2C") || mac.startsWith("84:9C:A6")
                 ||	mac.startsWith("88:03:55"))
 		{
-			result.add(Wifi_password_engine.ArcadyanKeygen(essid,mac));
+			result.add(Wifi_password_engine.ArcadyanKeygen(essid,bssid));
 		}
 
 		if(			mac.startsWith("00:08:27") || mac.startsWith("00:13:C8")
@@ -1299,8 +1331,8 @@ public class Wifi_password_engine
                 ||	mac.startsWith("D4:D1:84") || mac.startsWith("DC:0B:1A")
                 ||	mac.startsWith("F0:84:2F")) 
 		{
-			result.add(Wifi_password_engine.ArnetPirelliKeygen(essid,mac_mac));
-			result.add(Wifi_password_engine.MeoPirelliKeygen(essid,mac_mac));
+			result.add(Wifi_password_engine.ArnetPirelliKeygen(essid,bssid));
+			result.add(Wifi_password_engine.MeoPirelliKeygen(essid,bssid));
         }
 
 		if (essid.matches("(AXTEL|AXTEL-XTREMO)-[0-9a-fA-F]{4}")) 
@@ -1318,7 +1350,7 @@ public class Wifi_password_engine
                 || mac.startsWith("94:44:52") || mac.startsWith("08:86:3B")
                 || mac.startsWith("EC:1A:59"))
 		{
-			result.add(Wifi_password_engine.BelkinKeygen(essid,mac_mac));
+			result.add(Wifi_password_engine.BelkinKeygen(essid,bssid));
 		}
 
 		if (essid.matches("Cabovisao-[0-9a-fA-F]{4}")) 
@@ -1341,7 +1373,7 @@ public class Wifi_password_engine
         		mac.startsWith("CC:1A:FA") || mac.startsWith("A0:EC:80") ||
         		mac.startsWith("54:22:F8") || mac.startsWith("14:60:80")) 
         {
-        	result.add(Wifi_password_engine.ConnKeygen(essid,mac_mac));
+        	result.add(Wifi_password_engine.ConnKeygen(essid,bssid));
         }
 
         if (	mac.startsWith("00:1C:A2") || mac.startsWith("00:17:C2") || mac.startsWith("00:19:3E") ||
@@ -1475,7 +1507,7 @@ public class Wifi_password_engine
                 || mac.startsWith("00:19:15") || mac.startsWith("00:11:F5")	|| mac.startsWith("00:0F:E2")
 			)
         {
-        	result.add(Wifi_password_engine.HuaweiKeygen(essid,mac));
+        	result.add(Wifi_password_engine.HuaweiKeygen(essid,bssid));
         }
 
         if (		mac.startsWith("00:18:82") || mac.startsWith("00:1E:10") || mac.startsWith("00:22:A1")
@@ -1500,7 +1532,7 @@ public class Wifi_password_engine
                 ||	mac.startsWith("F8:4A:BF") || mac.startsWith("F8:98:B9") || mac.startsWith("F8:BF:09")
                 ||	mac.startsWith("F8:E8:11"))
         {
-			result.add(Wifi_password_engine.HG824xKeygen(essid,mac_mac));
+			result.add(Wifi_password_engine.HG824xKeygen(essid,bssid));
         }
 
 
@@ -1590,7 +1622,7 @@ public class Wifi_password_engine
         		|| mac.startsWith("64:87:D7") || mac.startsWith("74:88:8B")
         		|| mac.startsWith("A4:52:6F") || mac.startsWith("D4:D1:84"))
         {
-        	result.add(Wifi_password_engine.PBSKeygen(essid,mac_mac));
+        	result.add(Wifi_password_engine.PBSKeygen(essid,bssid));
         }
 
         if (essid.matches("FASTWEB-1-(000827|0013C8|0017C2|00193E|001CA2|001D8B|"+ "002233|00238E|002553|00A02F|080018|3039F2|38229D|6487D7)[0-9A-Fa-f]{6}")) 
@@ -1612,8 +1644,8 @@ public class Wifi_password_engine
 
         if (mac.startsWith("00:0C:F6") || mac.startsWith("64:D1:A3")) 
         {
-			result.add(Wifi_password_engine.SitecomX5000Keygen(mac_mac));
-			result.add(Wifi_password_engine.Sitecom2100Keygen(mac_mac));
+			result.add(Wifi_password_engine.SitecomX5000Keygen(bssid));
+			result.add(Wifi_password_engine.Sitecom2100Keygen(bssid));
         }
 
         if (essid.toLowerCase().matches("^sitecom[0-9a-f]{6}$") || (mac.startsWith("00:0C:F6") || mac.startsWith("64:D1:A3"))) 
@@ -1630,7 +1662,7 @@ public class Wifi_password_engine
 			catch (UnparseableMacException e) 
 			{
 				//might be non-default essid:
-	       		result.add(Wifi_password_engine.SitecomWLR341_400xKeygen(mac_mac));
+	       		result.add(Wifi_password_engine.SitecomWLR341_400xKeygen(bssid));
 			}
         }
 
@@ -1752,14 +1784,14 @@ public class Wifi_password_engine
 
         if (essid.matches("(WLAN|WiFi|WIFI|YaCom|YACOM)[0-9a-zA-Z]{6}"))
         {
-        	result.add(Wifi_password_engine.Wlan6Keygen(essid,mac_mac));
+        	result.add(Wifi_password_engine.Wlan6Keygen(essid,bssid));
         }
 
         if (essid.matches("(WLAN|JAZZTEL)_[0-9a-fA-F]{4}")) 
         {
         	if (mac.startsWith("00:1F:A4") || mac.startsWith("F4:3E:61") || mac.startsWith("40:4A:03"))
         	{
-        		result.add(Wifi_password_engine.ZyxelKeygen(essid,mac_mac));
+        		result.add(Wifi_password_engine.ZyxelKeygen(essid,bssid));
         	}
 
         	if (		mac.startsWith("00:1B:20") || mac.startsWith("64:68:0C")
@@ -1769,7 +1801,7 @@ public class Wifi_password_engine
                     ||	mac.startsWith("C8:6C:87") || mac.startsWith("D0:AE:EC")
                     ||	mac.startsWith("00:19:15") || mac.startsWith("00:1A:2B"))
         	{
-        		result.add(Wifi_password_engine.ComtrendKeygen(essid,mac));
+        		result.add(Wifi_password_engine.ComtrendKeygen(essid,bssid));
         	}
         }
 
