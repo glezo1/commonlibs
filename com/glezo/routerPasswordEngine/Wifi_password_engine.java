@@ -223,8 +223,7 @@ public class Wifi_password_engine
 	//-----------------------------------------------------------------------------------------------------------------------
 	public static PasswordDictionary				speedtouch_keys(String eessid)					throws NoSuchAlgorithmException
 	{
-		String eessid_suffix=null;
-		if(eessid.startsWith("SpeedTouch"))	{	eessid_suffix=eessid.substring(10);	}
+		String eessid_suffix=eessid.substring(eessid.length()-6);
 		
 		ArrayList<String> result=new ArrayList<String>();
 		byte[] charectbytes0 = {'3', '3', '3', '3', '3', '3',
@@ -576,7 +575,6 @@ public class Wifi_password_engine
 	//-----------------------------------------------------------------------------------------------------------------------
 	public static PasswordDictionary				ComtrendKeygen(String essid,Mac bssid)
 	{
-		SUUUUU! corregir
 		ArrayList<String> result=new ArrayList<String>();
 		final String	magic		= "bcgbghgg";
 		final String	lowermagic	= "64680C";
@@ -584,16 +582,6 @@ public class Wifi_password_engine
 		final String	mac001a2b	= "001A2B";
 	
 		final String ssidIdentifier = essid.substring(essid.length() - 4);
-		//TODO! abstraer md5
-		MessageDigest md;
-		try 
-		{
-			md = MessageDigest.getInstance("MD5");
-		} 
-		catch (NoSuchAlgorithmException e1) 
-		{
-			return null;
-		}
 		final String mac = bssid.get_mac("",true);
 		try 
 		{
@@ -601,62 +589,35 @@ public class Wifi_password_engine
 			{
 				for (int i = 0; i < 512; i++) 
 				{
-					md.reset();
-					md.update(magic.getBytes("ASCII"));
 					String xx;
-					String yy;
-					if (i < 256) 
+					if (i < 256)	{	xx = Integer.toHexString(i).toUpperCase(Locale.US);			} 
+					else			{	xx = Integer.toHexString(i - 256).toUpperCase(Locale.US);	}
+					while (xx.length() < 2)	{	xx = "0" + xx;	}
+					if(i<256)		
 					{
-						md.update(lowermagic.getBytes("ASCII"));
-						xx = Integer.toHexString(i).toUpperCase(Locale.US);
-					} 
-					else 
-					{
-						md.update(highermagic.getBytes("ASCII"));
-						xx = Integer.toHexString(i - 256).toUpperCase(Locale.US);
-					}
-					while (xx.length() < 2)
-					{
-						xx = "0" + xx;
-					}
-					md.update(xx.getBytes("ASCII"));
-                    md.update(ssidIdentifier.getBytes("ASCII"));
-					md.update(mac.getBytes("ASCII"));
-					byte[] hash = md.digest();
-					result.add(StringUtils.getHexString(hash).substring(0, 20));
-					String foo=StringUtils.getHexString(hash).substring(0, 20);
-					String bar=null;
-					if(i<256)
-					{
-						yy = Integer.toHexString(i).toUpperCase(Locale.US);
+						result.add(StringUtils.md5(	magic.getBytes("ASCII")
+													,lowermagic.getBytes("ASCII")
+													,xx.getBytes("ASCII")
+													,ssidIdentifier.getBytes("ASCII"),mac.getBytes("ASCII")
+													));
 					}
 					else
 					{
-						yy = Integer.toHexString(i - 256).toUpperCase(Locale.US);
+						result.add(StringUtils.md5(	magic.getBytes("ASCII")
+													,highermagic.getBytes("ASCII")
+													,xx.getBytes("ASCII")
+													,ssidIdentifier.getBytes("ASCII")
+													,mac.getBytes("ASCII")
+													));
 					}
-					while (yy.length() < 2)
-					{
-						yy = "0" + yy;
-					}
-					if(i<256)
-					{
-						bar=StringUtils.md5(StringUtils.concat_byte_arrays(lowermagic.getBytes("ASCII"),yy.getBytes("ASCII"),ssidIdentifier.getBytes("ASCII"),mac.getBytes("ASCII")));
-					}
-					else
-					{
-						bar=StringUtils.md5(StringUtils.concat_byte_arrays(highermagic.getBytes("ASCII"),yy.getBytes("ASCII"),ssidIdentifier.getBytes("ASCII"),mac.getBytes("ASCII")));
-					}
-					System.out.println(foo);
-					System.out.println(bar.substring(0,20));
 				}
 			} 
 			else 
 			{
 				final String macMod = mac.substring(0, 8) + ssidIdentifier;
-				result.add(StringUtils.md5(StringUtils.concat_byte_arrays(	magic.getBytes("ASCII")
-																			,macMod.toUpperCase(Locale.getDefault()).getBytes("ASCII")
-																			,mac.toUpperCase(Locale.getDefault()).getBytes("ASCII")
-																		)
+				result.add(StringUtils.md5(	magic.getBytes("ASCII")
+											,macMod.toUpperCase(Locale.getDefault()).getBytes("ASCII")
+											,mac.toUpperCase(Locale.getDefault()).getBytes("ASCII")
 											).substring(0,20));
 			}
 			return new PasswordDictionary("ComtrendKeygen",result,"");
@@ -762,7 +723,7 @@ public class Wifi_password_engine
 		byte[] hash=null;
 		try 
 		{
-			hash=StringUtils.sha256(StringUtils.concat_byte_arrays(ALICE_SEED,new String("1236790").getBytes("UTF-8"),macBytes));
+			hash=StringUtils.sha256(ALICE_SEED,new String("1236790").getBytes("UTF-8"),macBytes);
 		} 
 		catch (NoSuchAlgorithmException e)		{	return new PasswordDictionary("ArnetPirelliKeygen",words,"NoSuchAlgorithmException:SHA-256");	}
 		catch (UnsupportedEncodingException e)	{	return new PasswordDictionary("ArnetPirelliKeygen",words,"UnsupportedEncodingException:UTF-8");	}
@@ -799,7 +760,7 @@ public class Wifi_password_engine
 		byte[] hash=null;
 		try 
 		{
-			hash=StringUtils.sha256(StringUtils.concat_byte_arrays(ALICE_SEED,new String("1236790").getBytes("UTF-8"),macBytes));
+			hash=StringUtils.sha256(ALICE_SEED,new String("1236790").getBytes("UTF-8"),macBytes);
 		} 
 		catch (NoSuchAlgorithmException e)		{	return new PasswordDictionary("MeoPirelliKeygen",words,"NoSuchAlgorithmException:SHA-256");		} 
 		catch (UnsupportedEncodingException e)	{	return new PasswordDictionary("MeoPirelliKeygen",words,"UnsupportedEncodingException:UTF-8");	} 
@@ -833,7 +794,7 @@ public class Wifi_password_engine
 		byte[] hash=null;
 		try 
 		{
-			hash = StringUtils.sha256(StringUtils.concat_byte_arrays(saltSHA256,macHex));
+			hash = StringUtils.sha256(saltSHA256,macHex);
 		}
 		catch (NoSuchAlgorithmException e) 
 		{
@@ -1747,8 +1708,7 @@ public class Wifi_password_engine
         if (essid.matches("(Thomson|Blink|SpeedTouch|O2Wireless|O2wireless|Orange-|ORANGE-|INFINITUM|"
                 + "BigPond|Otenet|Bbox-|DMAX|privat|TN_private_|CYTA|Vodafone-|Optimus|OptimusFibra|MEO-)[0-9a-fA-F]{6}"))
         {
-			//TODO!
-			result.add(new PasswordDictionary("ThomsonKeygen(eessid, mac)",null,"ThomsonKeygen TODO! pending"));
+			result.add(Wifi_password_engine.speedtouch_keys(essid));
         }
         
         if (mac.startsWith("F8:D1:11"))
