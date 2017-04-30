@@ -105,13 +105,16 @@ public class StringUtils
 		return result;
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static String		md5(byte[] input) throws NoSuchAlgorithmException 
+	public static String		md5(byte[] ...input) throws NoSuchAlgorithmException 
 	{
 		String result = "";
 		if(input != null) 
 		{
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(input);
+	    	for(byte[] current_input : input)
+	    	{
+	    		md.update(current_input);
+	    	}
 			BigInteger hash = new BigInteger(1, md.digest());
 			result = hash.toString(16);
 			while(result.length() < 32) 
@@ -173,10 +176,13 @@ public class StringUtils
 		return result;
 	}	
 	//-----------------------------------------------------------------------------------------------------------------------
-	public static byte[]		sha256(byte[] input) throws NoSuchAlgorithmException 
+	public static byte[]		sha256(byte[] ...input) throws NoSuchAlgorithmException 
 	{
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(input);
+    	for(byte[] current_input : input)
+    	{
+    		md.update(current_input);
+    	}
 		byte[] hash=md.digest();
 		return hash;
 	}	
@@ -225,26 +231,6 @@ public class StringUtils
     	return "";
     }
 	//-----------------------------------------------------------------------------------------------------------------------
-    public static byte[]		concat_byte_arrays(byte[] ...parts)
-    {
-    	int total_length=0;
-    	for(byte[] current_part : parts)
-    	{
-    		total_length+=current_part.length;
-    	}
-    	byte[] result=new byte[total_length];
-    	int pointer=0;
-    	for(byte[] current_part : parts)
-    	{
-    		for(int i=0;i<current_part.length;i++)
-    		{
-    			result[pointer]=current_part[i];
-    			pointer++;
-    		}
-    	}
-    	return result;
-    }
-    //-----------------------------------------------------------------------------------------------------------------------
 	/*
 		input		:	input string
 		pattern		:	arraylist of patterns to be replaced
