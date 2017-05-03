@@ -15,7 +15,6 @@ import com.glezo.stringUtils.StringUtils;
 import com.glezo.language.Language;
 import com.glezo.language.Language_prefix_middle_suffix;
 
-//TODO! cambiar los String bssid por Mac bssid
 
 //based on https://github.com/routerkeygen/routerkeygenAndroid/blob/master/android/routerKeygen/src/main/java/org/exobel/routerkeygen/WirelessMatcher.java
 //but caring 'bout model-view-controller and all that stuff nobody seems to give a damn about.
