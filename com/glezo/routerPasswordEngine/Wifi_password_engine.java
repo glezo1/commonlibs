@@ -15,6 +15,7 @@ import com.glezo.stringUtils.StringUtils;
 import com.glezo.language.Language;
 import com.glezo.language.Language_prefix_middle_suffix;
 
+//TODO! cambiar los String bssid por Mac bssid
 
 //based on https://github.com/routerkeygen/routerkeygenAndroid/blob/master/android/routerKeygen/src/main/java/org/exobel/routerkeygen/WirelessMatcher.java
 //but caring 'bout model-view-controller and all that stuff nobody seems to give a damn about.
@@ -1161,6 +1162,58 @@ public class Wifi_password_engine
 		return new PasswordDictionary("Infostrada",words,"");		
 	}
 	//-----------------------------------------------------------------------------------------------------------------------
+	public static PasswordDictionary				Wlan2Keygen(String essid,Mac bssid)
+	{
+		ArrayList<String> words = new ArrayList<String>();
+		char[] key = new char[26];
+		String bssid_string=bssid.get_mac("",true);
+		key[0]	= bssid_string.charAt(10);
+		key[1]	= bssid_string.charAt(11);
+		key[2]	= bssid_string.charAt(0);
+		key[3]	= bssid_string.charAt(1);
+		key[4]	= bssid_string.charAt(8);
+		key[5]	= bssid_string.charAt(9);
+		key[6]	= bssid_string.charAt(2);
+		key[7]	= bssid_string.charAt(3);
+		key[8]	= bssid_string.charAt(4);
+		key[9]	= bssid_string.charAt(5);
+		key[10]	= bssid_string.charAt(6);
+		key[11]	= bssid_string.charAt(7);
+		key[12]	= bssid_string.charAt(10);
+		key[13]	= bssid_string.charAt(11);
+		key[14]	= bssid_string.charAt(8);
+		key[15]	= bssid_string.charAt(9);
+		key[16]	= bssid_string.charAt(2);
+		key[17]	= bssid_string.charAt(3);
+		key[18]	= bssid_string.charAt(4);
+		key[19]	= bssid_string.charAt(5);
+		key[20]	= bssid_string.charAt(6);
+		key[21]	= bssid_string.charAt(7);
+		key[22]	= bssid_string.charAt(0);
+		key[23]	= bssid_string.charAt(1);
+		key[24]	= bssid_string.charAt(4);
+		key[25]	= bssid_string.charAt(5);
+		
+		int max = 9;
+		String begin = essid.substring(essid.length()-2,essid.length());	//0,1
+		int primer_n = Integer.parseInt(begin, 16);
+		if (primer_n > max) 
+		{
+			String cadena = String.valueOf(key, 0, 2);
+			int value = Integer.parseInt(cadena, 16);
+			value = value - 1;
+			String cadena2 = Integer.toHexString(value);
+			if (cadena2.length() < 2)
+			{
+				cadena2 = "0" + cadena2;
+			}
+			key[0] = cadena2.charAt(0);
+			key[1] = cadena2.charAt(1);
+		}
+		words.add(String.valueOf(key, 0, 26));
+		return new PasswordDictionary("Wlan2Keygen",words,"");		
+	}
+	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------------------------------------------
 	//FROM MAC TO PASSWORDS--------------------------------------------------------------------------------------------------
@@ -1245,7 +1298,16 @@ public class Wifi_password_engine
         }
 		
 		
-		
+        if(	essid.matches("WLAN_[0-9a-fA-F]{2}")
+        	&&
+        	(	mac.startsWith("00:01:38")	||	mac.startsWith("00:16:38")
+             ||	mac.startsWith("00:01:13")	||	mac.startsWith("00:01:1B") 
+             ||	mac.startsWith("00:19:5B")
+            )
+        )
+        {
+        	result.add(Wifi_password_engine.Wlan2Keygen(essid, bssid));
+        }
 		
 		
 		if (		mac.startsWith("00:19:C7") || mac.startsWith("18:80:F5") || mac.startsWith("A4:C7:DE")
