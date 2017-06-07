@@ -2,6 +2,8 @@ package com.glezo.timeFormatter;
 
 public class TimeFormatter 
 {
+	//TODO! so raggedy, should use exteral iso pattern parameter...
+	//------------------------------------------------------------------------------------------------
 	public static String	format(long milliseconds)
 	{
 		long days	=milliseconds/1000/60/60/24;
@@ -17,4 +19,18 @@ public class TimeFormatter
 		else 				{	r+=String.format("%02d",hours)+":"+String.format("%02d",minutes)+":"+String.format("%02d",seconds)+"."+String.format("%03d",milliseconds);					}
 		return r;
 	}
+	//------------------------------------------------------------------------------------------------
+	public static String	format_hhmmss(long milliseconds)
+	{
+		long hours	=milliseconds/1000/60/60;
+		milliseconds-=hours*1000*60*60;
+		long minutes=milliseconds/1000/60;
+		milliseconds-=minutes*1000*60;
+		long seconds=milliseconds/1000;
+		milliseconds-=seconds*1000;
+		String r="";
+		r+=String.format("%02d",hours)+":"+String.format("%02d",minutes)+":"+String.format("%02d",seconds);
+		return r;
+	}
+	//------------------------------------------------------------------------------------------------
 }
