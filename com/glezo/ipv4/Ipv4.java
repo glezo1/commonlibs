@@ -109,9 +109,18 @@ public class Ipv4 implements Comparable<Ipv4>
 		}
 	}
 	//----------------------------------------------------------------
-	public boolean			equals(Ipv4 another)
+	public boolean			equals(Object o)
 	{
-		return this.ip_long==another.ip_long;
+		if(o==null)
+		{
+			return false;
+		}
+		if(this.getClass()!=o.getClass())
+		{
+			return false;
+		}
+		Ipv4 oo=(Ipv4)o;
+		return this.ip_long==oo.ip_long;
 	}
 	//----------------------------------------------------------------
 	public int				getOctet(int i) //1,2,3,4. 1 is the most significative
